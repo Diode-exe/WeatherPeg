@@ -1,0 +1,6 @@
+show_warning: 1
+show_buttons: 1
+show_instruction: 1
+do_tts: 0
+show_link: 1
+mode: 1

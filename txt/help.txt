@@ -1,0 +1,10 @@
+
+Welcome, and thank you for using WeatherPeg!
+
+===========================================
+
+Commands (all commands without quotes)
+
+"help" prints this text
+
+===========================================
