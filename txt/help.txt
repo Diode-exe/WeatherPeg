@@ -8,3 +8,17 @@ Commands (all commands without quotes)
 "help" prints this text
 
 ===========================================
+
+===========================================
+
+Info
+
+(this window is scrollable)
+
+Press F5 to refresh the weather
+
+F6 to create a new commands window
+
+F11 for fullscreen
+
+===========================================

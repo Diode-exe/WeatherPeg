@@ -9,7 +9,6 @@ import tts_helper
 import source_helper
 import time
 import threading
-import input_helper
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
@@ -31,7 +30,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 1.9"
+current_version = "WeatherPeg Version 1.9.1"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -332,6 +331,7 @@ def display():
     root.bind("<F11>", toggle_fullscreen)
     root.bind("<Escape>", exit_fullscreen)
     root.bind("<F5>", refresh_weather)
+    root.bind("<F6>", create_command_window)
 
     # Create StringVar variables
     title_var = tk.StringVar(value=current_title)
@@ -504,7 +504,7 @@ def show_help():
     text_widget.insert(1.0, help_text)
     text_widget.pack(fill=tk.BOTH, expand=True)
 
-def create_command_window():
+def create_command_window(event=None):
     # Check if root still exists and is valid
     if not root or not root.winfo_exists():
         print("Main window has been destroyed!")
