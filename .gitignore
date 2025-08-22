@@ -1,5 +1,7 @@
-weather-cmd.spec
 requesttest.py
 history.txt
 txt/history.txt
-dist/txt/history.txt
+*.exe
+*.spec
+build/
+dist/
