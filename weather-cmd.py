@@ -4,7 +4,7 @@ import re
 import html
 import tkinter as tk
 import datetime
-import os.path
+import os
 import tts_helper
 import source_helper
 import time
@@ -13,6 +13,7 @@ import threading
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
 # Leaving this in just for reference in case I lose the URLs
+# Don't use these, it' all handled in source_helper.py
 
 # Global variables to store weather data
 current_entry = None
@@ -95,53 +96,57 @@ def update_display():
         warning_title_var.set(warning_title)
 
         # Update the scrolling summary
-        if scrolling_summary:
-            scrolling_summary.update_text(current_summary)
+        if ScrollingSummary.scrolling_summary:
+            ScrollingSummary.scrolling_summary.update_text(current_summary)
 
-def update_forecast():
-    title_var.set(current_title)
-    scrolling_summary.update_text(current_summary)
-    warning_var.set("")
-    warning_title_var.set("")
 
-def refresh_weather(event=None):
-    """Refresh weather data and update display"""
-    weathermodechoice()
-    logger()
-    # random_fact()
-    # current_fact_var.set(current_fact)
-    display_flash()
-    update_display()
+class WeatherFunctions():
+    # this does not use self, for the record
+    def update_forecast():
+        title_var.set(current_title)
+        scrolling_summary.update_text(current_summary)
+        warning_var.set("")
+        warning_title_var.set("")
 
-def toggle_fullscreen(event=None):
-    """Toggle fullscreen mode"""
-    global root
-    current_fullscreen = root.attributes("-fullscreen")
-    root.attributes("-fullscreen", not current_fullscreen)
+    def refresh_weather(event=None):
+        """Refresh weather data and update display"""
+        weathermodechoice()
+        logger()
+        # random_fact()
+        # current_fact_var.set(current_fact)
+        display_flash()
+        update_display()
 
-    # # Show elements when exiting fullscreen, hide when entering
-    # if current_fullscreen:  # Was fullscreen, now exiting
-    #     show_elements()
-    # else:  # Was windowed, now entering fullscreen
-    #     hide_elements()
+class ScreenState():
+    def toggle_fullscreen(event=None):
+        """Toggle fullscreen mode"""
+        global root
+        current_fullscreen = root.attributes("-fullscreen")
+        root.attributes("-fullscreen", not current_fullscreen)
 
-def exit_fullscreen(event=None):
-    """Exit fullscreen mode"""
-    global root
-    root.attributes("-fullscreen", False)
-    # show_elements()
+        # # Show elements when exiting fullscreen, hide when entering
+        # if current_fullscreen:  # Was fullscreen, now exiting
+        #     show_elements()
+        # else:  # Was windowed, now entering fullscreen
+        #     hide_elements()
 
-# def hide_elements():
-#     refresh_button.pack_forget()
-#     fullscreen_button.pack_forget()
-#     instructions.pack_forget()
-#     root.config(cursor="none")
+    def exit_fullscreen(event=None):
+        """Exit fullscreen mode"""
+        global root
+        root.attributes("-fullscreen", False)
+        # show_elements()
 
-# def show_elements():
-#     fullscreen_button.pack(pady=5)
-#     refresh_button.pack(pady=10)
-#     instructions.pack(pady=5)
-#     root.config(cursor="")
+    # def hide_elements():
+    #     refresh_button.pack_forget()
+    #     fullscreen_button.pack_forget()
+    #     instructions.pack_forget()
+    #     root.config(cursor="none")
+
+    # def show_elements():
+    #     fullscreen_button.pack(pady=5)
+    #     refresh_button.pack(pady=10)
+    #     instructions.pack(pady=5)
+    #     root.config(cursor="")
 
 def logger():
     filename = "txt/history.txt"
@@ -319,8 +324,6 @@ def display():
     global display_flash
     global refresh_button, fullscreen_button, instructions
     global show_warnings, show_instructions, show_buttons
-    global warning_title, warning_summary
-    global weathermodechoice
 
     root = tk.Tk()
     root.title("WeatherPeg")
@@ -328,10 +331,10 @@ def display():
     root.geometry("800x600")
 
     # Fullscreen keybindings
-    root.bind("<F11>", toggle_fullscreen)
-    root.bind("<Escape>", exit_fullscreen)
-    root.bind("<F5>", refresh_weather)
-    root.bind("<F6>", create_command_window)
+    root.bind("<F11>", ScreenState.toggle_fullscreen)
+    root.bind("<Escape>", ScreenState.exit_fullscreen)
+    root.bind("<F5>", WeatherFunctions.refresh_weather)
+    root.bind("<F6>", CommandWindow.create_command_window)
 
     # Create StringVar variables
     title_var = tk.StringVar(value=current_title)
@@ -348,35 +351,50 @@ def display():
 
     # Create scrolling summary (replaces the old summary_label)
     scrolling_summary = ScrollingSummary(root, current_summary, width=80, speed=150)
+
     if get_config_bool("show_link"):
         print("[LOG] Showing link")
-        link_label = tk.Label(root, textvariable=link_var, fg="cyan", bg="black",
-                            font=("Courier", 10), justify="left",
-                            padx=10, pady=10)
+        link_label = tk.Label(
+            root, textvariable=link_var, 
+            fg="cyan", bg="black",
+            font=("Courier", 10), justify="left",
+            padx=10, pady=10
+        )
         link_label.pack()
     else:
         print("[LOG] Not showing link")
 
-    version_label = tk.Label(root, text=current_version, fg="cyan", bg="black",
-                         font=("Courier", 10), justify="left")
+    version_label = tk.Label(
+        root, text=current_version, 
+        fg="cyan", bg="black",
+        font=("Courier", 10), justify="left"
+    )
     version_label.pack(side=tk.BOTTOM, pady=10, padx=10)
     
-    designed_by_label = tk.Label(root, text=designed_by, fg="cyan", bg="black",
-                         font=("Courier", 10), justify="left")
+    designed_by_label = tk.Label(
+        root, text=designed_by, 
+        fg="cyan", bg="black",
+        font=("Courier", 10), justify="left"
+    )
     designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
 
     if get_config_bool("show_warning"):
         print("[LOG] Showing warning label")
         show_warnings = True
-        current_warning_title = tk.Label(root, textvariable=warning_title_var, fg="lime", bg="black",
-                            font=("Courier", 16, "bold"), justify="left",
-                            padx=10, pady=10, wraplength=750)
+        current_warning_title = tk.Label(
+            root, textvariable=warning_title_var, 
+            fg="lime", bg="black",
+            font=("Courier", 16, "bold"), justify="left",
+            padx=10, pady=10, wraplength=750
+        )
         current_warning_title.pack()
 
-        current_warning = tk.Label(root, textvariable=warning_var, fg="lime", bg="black",
-                            font=("Courier", 16, "bold"), justify="left",
-                            padx=10, pady=10, wraplength=750)
-
+        current_warning = tk.Label(
+            root, textvariable=warning_var, 
+            fg="lime", bg="black",
+            font=("Courier", 16, "bold"), justify="left",
+            padx=10, pady=10, wraplength=750
+        )
         current_warning.pack()
     else:
         print("[LOG] Not showing warning labels")
@@ -390,12 +408,18 @@ def display():
 
     if get_config_bool("show_buttons"):
         print("[LOG] Showing buttons")
-        refresh_button = tk.Button(root, text="Refresh Weather (F5)", command=refresh_weather,
-                                bg="green", fg="yellow", font=("Courier", 12))
+        refresh_button = tk.Button(
+            root, text="Refresh Weather (F5)", 
+            command=WeatherFunctions.refresh_weather,
+            bg="green", fg="yellow", font=("Courier", 12)
+        )
         refresh_button.pack(pady=10)
 
-        fullscreen_button = tk.Button(root, text="Toggle Fullscreen (F11)", command=toggle_fullscreen,
-                                    bg="blue", fg="white", font=("Courier", 12))
+        fullscreen_button = tk.Button(
+            root, text="Toggle Fullscreen (F11)", 
+            command=ScreenState.toggle_fullscreen,
+            bg="blue", fg="white", font=("Courier", 12)
+        )
         fullscreen_button.pack(pady=5)
         # forecast_button = tk.Button(root, text="5 Day Forecast", command=process_weather_entries,
         #                     bg="blue", fg="white", font=("Courier", 12))
@@ -409,8 +433,11 @@ def display():
         print("[LOG] Showing instruction")
         show_instructions = True
         # Add instructions
-        instructions = tk.Label(root, text="Press F11 to toggle fullscreen • Press Escape to exit fullscreen",
-                            fg="gray", bg="black", font=("Courier", 10))
+        instructions = tk.Label(
+            root, text="Press F11 to toggle fullscreen • Press Escape to exit fullscreen",
+            fg="gray", bg="black",
+            font=("Courier", 10)
+        )
         instructions.pack(pady=5)
     else:
         print("[LOG] Not showing instruction")
@@ -418,8 +445,11 @@ def display():
 
     # Add timestamp
     timestamp_var = tk.StringVar()
-    timestamp_label = tk.Label(root, textvariable=timestamp_var, fg="yellow", bg="black",
-                              font=("Courier", 10))
+    timestamp_label = tk.Label(
+        root, textvariable=timestamp_var,
+        fg="yellow", bg="black",
+        font=("Courier", 10)
+    )
     timestamp_label.pack(side=tk.BOTTOM, pady=10)
 
     def update_timestamp():
@@ -430,7 +460,7 @@ def display():
 
     # Set up automatic refresh every 2 minutes
     def auto_refresh():
-        refresh_weather()
+        WeatherFunctions.refresh_weather()
         timestamp_var.set(f"Auto-refreshed: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         root.after(120000, auto_refresh)  # 120000 ms = 2 minutes
 
@@ -474,7 +504,7 @@ def display():
 
     if get_config_bool("show_cmd"):
         print("[LOG] Showing command window")
-        create_command_window()
+        CommandWindow.create_command_window()
     else:
         print("[LOG] Not showing command window")
 
@@ -490,46 +520,68 @@ def display():
 
     root.mainloop()
 
-def show_help():
-    try:
-        with open("txt/help.txt", "r") as helpfile:
-            help_text = helpfile.read()
-    except FileNotFoundError:
-        help_text = "Help file not found!"
-    
-    help_window = tk.Toplevel(root)
-    help_window.title("Help")
-    help_window.geometry("400x300")
-    text_widget = tk.Text(help_window, wrap=tk.WORD)
-    text_widget.insert(1.0, help_text)
-    text_widget.pack(fill=tk.BOTH, expand=True)
+class CommandWindow:
+    """Static-style class for command window functions"""
 
-def create_command_window(event=None):
-    # Check if root still exists and is valid
-    if not root or not root.winfo_exists():
-        print("Main window has been destroyed!")
-        return None
+    @staticmethod
+    def show_help():
+        """Open a help window showing contents of txt/help.txt"""
+        try:
+            with open("txt/help.txt", "r") as helpfile:
+                help_text = helpfile.read()
+        except FileNotFoundError:
+            help_text = "Help file not found!"
         
-    cmd_window = tk.Toplevel(root)
-    cmd_window.title("WeatherPeg Commands")
-    cmd_window.geometry("300x200")
-   
-    # Use tk.Button, not cmd_window.Button
-    help_btn = tk.Button(cmd_window, text="Help", command=show_help)
-    help_btn.pack(pady=5)
+        help_window = tk.Toplevel(root)
+        help_window.title("Help")
+        help_window.geometry("400x300")
+        
+        text_widget = tk.Text(help_window, wrap=tk.WORD)
+        text_widget.insert(1.0, help_text)
+        text_widget.pack(fill=tk.BOTH, expand=True)
 
-    fullscreen_button_cmd = tk.Button(cmd_window, text="Toggle Fullscreen (F11)", command=toggle_fullscreen,
-                                    bg="blue", fg="white", font=("Courier", 12))
-    fullscreen_button_cmd.pack(pady=5)
+    @staticmethod
+    def create_command_window(event=None):
+        """Create the main command window with buttons"""
+        if not root or not root.winfo_exists():
+            print("Main window has been destroyed!")
+            return None
+        
+        cmd_window = tk.Toplevel(root)
+        cmd_window.title("WeatherPeg Commands")
+        cmd_window.geometry("300x200")
+    
+        # Help button
+        help_btn = tk.Button(
+            cmd_window, text="Help", 
+            command=CommandWindow.show_help
+        )
+        help_btn.pack(pady=5)
 
-    refresh_button_cmd = tk.Button(cmd_window, text="Refresh Weather (F5)", command=refresh_weather,
-                        bg="green", fg="yellow", font=("Courier", 12))
-    refresh_button_cmd.pack(pady=10)
-   
-    exit_btn = tk.Button(cmd_window, text="Exit", command=root.quit)
-    exit_btn.pack(pady=5)
-   
-    return cmd_window
+        # Fullscreen toggle button
+        fullscreen_button = tk.Button(
+            cmd_window, 
+            text="Toggle Fullscreen (F11)", 
+            command=ScreenState.toggle_fullscreen,
+            bg="blue", fg="white", font=("Courier", 12)
+        )
+        fullscreen_button.pack(pady=5)
+
+        # Refresh weather button
+        refresh_button = tk.Button(
+            cmd_window, 
+            text="Refresh Weather (F5)", 
+            command=WeatherFunctions.refresh_weather,
+            bg="green", fg="yellow", font=("Courier", 12)
+        )
+        refresh_button.pack(pady=10)
+    
+        # Exit button
+        exit_btn = tk.Button(cmd_window, text="Exit", command=root.quit)
+        exit_btn.pack(pady=5)
+    
+        return cmd_window
+
 
 # Main execution
 if __name__ == "__main__":
