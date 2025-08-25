@@ -31,7 +31,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 1.9.1"
+current_version = "WeatherPeg Version 1.9.3"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -41,45 +41,51 @@ class ScrollingSummary:
         self.speed = speed
         self.position = 0
         self.is_scrolling = False
-
+        self.after_id = None  # Track the scheduled callback
+        self.scroll_id = 0  # Unique ID for each scroll session
         self.label = tk.Label(parent, text="", fg="lime", bg="black",
                             font=("Courier", 12), justify="left",
                             padx=10, pady=10)
         self.label.pack()
-
         self.update_text(text)
-
+    
     def update_text(self, new_text):
+        # Stop any existing scrolling by incrementing scroll_id
+        self.scroll_id += 1
+        self.is_scrolling = False
+        
+        # Cancel any pending after callbacks
+        if self.after_id:
+            self.label.after_cancel(self.after_id)
+            self.after_id = None
+        
         self.original_text = new_text
         self.position = 0
-
+        
         # Only scroll if text is longer than display width
         if len(new_text) <= self.width:
-            self.is_scrolling = False
             self.label.config(text=new_text)
         else:
             self.is_scrolling = True
-            self.scroll()
-
-    def scroll(self):
-        if not self.is_scrolling or not self.original_text:
+            current_scroll_id = self.scroll_id
+            self.scroll(current_scroll_id)
+    
+    def scroll(self, scroll_id):
+        # Check if this scroll session is still valid
+        if scroll_id != self.scroll_id or not self.is_scrolling or not self.original_text:
             return
-
+        
         # Create extended text with spacing for smooth looping
         extended_text = self.original_text + "   ***   "
-
         # Calculate visible portion
         start = self.position % len(extended_text)
         display_text = (extended_text[start:] + extended_text)[:self.width]
-
         self.label.config(text=display_text)
-
         # Move position for next update
         self.position += 1
-
-        # Schedule next update
-        self.label.after(self.speed, self.scroll)
-
+        # Schedule next update with the same scroll_id
+        self.after_id = self.label.after(self.speed, lambda: self.scroll(scroll_id))
+    
     def flash_black(self):
         """Flash the label white for refresh indication"""
         self.label.config(fg="black")
@@ -88,16 +94,14 @@ class ScrollingSummary:
 def update_display():
     """Update the GUI with current weather data"""
     global title_var, summary_var, link_var, scrolling_summary, warning_var
-
     if title_var and summary_var and link_var:
         title_var.set(current_title)
         link_var.set(current_link)
         warning_var.set(warning_summary)
         warning_title_var.set(warning_title)
-
         # Update the scrolling summary
-        if ScrollingSummary.scrolling_summary:
-            ScrollingSummary.scrolling_summary.update_text(current_summary)
+        if scrolling_summary:  # Fixed reference
+            scrolling_summary.update_text(current_summary)
 
 
 class WeatherFunctions():
@@ -323,7 +327,6 @@ def display():
     global root, title_var, summary_var, link_var, scrolling_summary, timestamp_var, warning_var, current_warning, current_fact_var, warning_title_var
     global display_flash
     global refresh_button, fullscreen_button, instructions
-    global show_warnings, show_instructions, show_buttons
 
     root = tk.Tk()
     root.title("WeatherPeg")
