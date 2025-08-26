@@ -8,3 +8,7 @@ Commands (all commands without quotes)
 "help" prints this text
 
 ===========================================
+
+Webserver runs on port 2048. I plan to make that customizable
+
+===========================================
