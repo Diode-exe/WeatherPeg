@@ -5,3 +5,6 @@ txt\history.txt
 *.spec
 build\
 dist\
+txt/history.txt
+txt/history.txt
+/build

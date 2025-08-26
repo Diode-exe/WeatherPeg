@@ -5,3 +5,5 @@ do_tts: 1
 show_link: 1
 mode: 1
 show_cmd: 1
+show_display: 1
+webserver: 1

@@ -1855,3 +1855,9 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: No watches or warnings in effect.
 Logged time: Current time is 2025-08-26 14:51:58
 --------------------------------------------------
+Current Conditions: Partly Cloudy, 26.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 3:00 PM CDT Tuesday 26 August 2025 Condition: Partly Cloudy Temperature: 26.7°C Pressure / Tendency: 101.7 kPa falling Visibility: 24 km Humidity: 47 % Humidex: 30 Dewpoint: 14.5°C Wind: W 15 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-26 15:50:07
+--------------------------------------------------

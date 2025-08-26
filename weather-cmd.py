@@ -249,14 +249,14 @@ def weathermodechoice():
                     print("Entry summary:", current_summary)
                     print("Entry link:", current_link)
                     print("-" * 50)
-                    title_var.set(current_title)
-                    link_var.set(current_link)
-                    warning_var.set(warning_summary)
-                    warning_title_var.set(warning_title)
-                    scrolling_summary.update_text(current_summary)
-                    break
-            start_webserver()
-
+                    if get_config_bool("show_display"):
+                        title_var.set(current_title)
+                        link_var.set(current_link)
+                        warning_var.set(warning_summary)
+                        warning_title_var.set(warning_title)
+                        scrolling_summary.update_text(current_summary)
+                        break
+            
             if tts_helper.get_config_bool_tts("do_tts"):
                 tts_helper.speaker(current_title)
                 tts_helper.speaker(current_summary)
@@ -331,202 +331,204 @@ def display():
     global display_flash
     global refresh_button, fullscreen_button, instructions
 
-    root = tk.Tk()
-    root.title("WeatherPeg")
-    root.configure(bg="black")
-    root.geometry("800x600")
+    if get_config_bool("show_display"):
 
-    # Fullscreen keybindings
-    root.bind("<F11>", ScreenState.toggle_fullscreen)
-    root.bind("<Escape>", ScreenState.exit_fullscreen)
-    root.bind("<F5>", WeatherFunctions.refresh_weather)
-    root.bind("<F6>", CommandWindow.create_command_window)
+        root = tk.Tk()
+        root.title("WeatherPeg")
+        root.configure(bg="black")
+        root.geometry("800x600")
 
-    # Create StringVar variables
-    title_var = tk.StringVar(value=current_title)
-    link_var = tk.StringVar(value=current_link)
-    warning_var = tk.StringVar(value=warning_summary)
-    warning_title_var = tk.StringVar(value=warning_title)
-    # current_fact_var = tk.StringVar(value=current_fact)
+        # Fullscreen keybindings
+        root.bind("<F11>", ScreenState.toggle_fullscreen)
+        root.bind("<Escape>", ScreenState.exit_fullscreen)
+        root.bind("<F5>", WeatherFunctions.refresh_weather)
+        root.bind("<F6>", CommandWindow.create_command_window)
 
-    # Create and pack labels
-    title_label = tk.Label(root, textvariable=title_var, fg="lime", bg="black",
-                          font=("Courier", 16, "bold"), justify="left",
-                          padx=10, pady=10, wraplength=750)
-    title_label.pack()
+        # Create StringVar variables
+        title_var = tk.StringVar(value=current_title)
+        link_var = tk.StringVar(value=current_link)
+        warning_var = tk.StringVar(value=warning_summary)
+        warning_title_var = tk.StringVar(value=warning_title)
+        # current_fact_var = tk.StringVar(value=current_fact)
 
-    # Create scrolling summary (replaces the old summary_label)
-    scrolling_summary = ScrollingSummary(root, current_summary, width=80, speed=150)
+        # Create and pack labels
+        title_label = tk.Label(root, textvariable=title_var, fg="lime", bg="black",
+                            font=("Courier", 16, "bold"), justify="left",
+                            padx=10, pady=10, wraplength=750)
+        title_label.pack()
 
-    if get_config_bool("show_link"):
-        print("[LOG] Showing link")
-        link_label = tk.Label(
-            root, textvariable=link_var, 
+        # Create scrolling summary (replaces the old summary_label)
+        scrolling_summary = ScrollingSummary(root, current_summary, width=80, speed=150)
+
+        if get_config_bool("show_link"):
+            print("[LOG] Showing link")
+            link_label = tk.Label(
+                root, textvariable=link_var, 
+                fg="cyan", bg="black",
+                font=("Courier", 10), justify="left",
+                padx=10, pady=10
+            )
+            link_label.pack()
+        else:
+            print("[LOG] Not showing link")
+
+        version_label = tk.Label(
+            root, text=current_version, 
             fg="cyan", bg="black",
-            font=("Courier", 10), justify="left",
-            padx=10, pady=10
+            font=("Courier", 10), justify="left"
         )
-        link_label.pack()
-    else:
-        print("[LOG] Not showing link")
-
-    version_label = tk.Label(
-        root, text=current_version, 
-        fg="cyan", bg="black",
-        font=("Courier", 10), justify="left"
-    )
-    version_label.pack(side=tk.BOTTOM, pady=10, padx=10)
-    
-    designed_by_label = tk.Label(
-        root, text=designed_by, 
-        fg="cyan", bg="black",
-        font=("Courier", 10), justify="left"
-    )
-    designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
-
-    if get_config_bool("show_warning"):
-        print("[LOG] Showing warning label")
-        show_warnings = True
-        current_warning_title = tk.Label(
-            root, textvariable=warning_title_var, 
-            fg="lime", bg="black",
-            font=("Courier", 16, "bold"), justify="left",
-            padx=10, pady=10, wraplength=750
+        version_label.pack(side=tk.BOTTOM, pady=10, padx=10)
+        
+        designed_by_label = tk.Label(
+            root, text=designed_by, 
+            fg="cyan", bg="black",
+            font=("Courier", 10), justify="left"
         )
-        current_warning_title.pack()
+        designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
 
-        current_warning = tk.Label(
-            root, textvariable=warning_var, 
-            fg="lime", bg="black",
-            font=("Courier", 16, "bold"), justify="left",
-            padx=10, pady=10, wraplength=750
-        )
-        current_warning.pack()
-    else:
-        print("[LOG] Not showing warning labels")
-        show_warnings = False
+        if get_config_bool("show_warning"):
+            print("[LOG] Showing warning label")
+            show_warnings = True
+            current_warning_title = tk.Label(
+                root, textvariable=warning_title_var, 
+                fg="lime", bg="black",
+                font=("Courier", 16, "bold"), justify="left",
+                padx=10, pady=10, wraplength=750
+            )
+            current_warning_title.pack()
 
-    # fact_label = tk.Label(root, textvariable=current_fact_var, fg="lime", bg="black",
-    #                 font=("Courier", 16, "bold"), justify="left",
-    #                 padx=10, pady=10, wraplength=750)
+            current_warning = tk.Label(
+                root, textvariable=warning_var, 
+                fg="lime", bg="black",
+                font=("Courier", 16, "bold"), justify="left",
+                padx=10, pady=10, wraplength=750
+            )
+            current_warning.pack()
+        else:
+            print("[LOG] Not showing warning labels")
+            show_warnings = False
 
-    # fact_label.pack()
+        # fact_label = tk.Label(root, textvariable=current_fact_var, fg="lime", bg="black",
+        #                 font=("Courier", 16, "bold"), justify="left",
+        #                 padx=10, pady=10, wraplength=750)
 
-    if get_config_bool("show_buttons"):
-        print("[LOG] Showing buttons")
-        refresh_button = tk.Button(
-            root, text="Refresh Weather (F5)", 
-            command=WeatherFunctions.refresh_weather,
-            bg="green", fg="yellow", font=("Courier", 12)
-        )
-        refresh_button.pack(pady=10)
+        # fact_label.pack()
 
-        fullscreen_button = tk.Button(
-            root, text="Toggle Fullscreen (F11)", 
-            command=ScreenState.toggle_fullscreen,
-            bg="blue", fg="white", font=("Courier", 12)
-        )
-        fullscreen_button.pack(pady=5)
-        # forecast_button = tk.Button(root, text="5 Day Forecast", command=process_weather_entries,
-        #                     bg="blue", fg="white", font=("Courier", 12))
-        # forecast_button.pack(pady=5)
-        show_buttons = True
-    else:
-        print("[LOG] Not showing buttons")
-        show_buttons = False
+        if get_config_bool("show_buttons"):
+            print("[LOG] Showing buttons")
+            refresh_button = tk.Button(
+                root, text="Refresh Weather (F5)", 
+                command=WeatherFunctions.refresh_weather,
+                bg="green", fg="yellow", font=("Courier", 12)
+            )
+            refresh_button.pack(pady=10)
 
-    if get_config_bool("show_instruction"):
-        print("[LOG] Showing instruction")
-        show_instructions = True
-        # Add instructions
-        instructions = tk.Label(
-            root, text="Press F11 to toggle fullscreen • Press Escape to exit fullscreen",
-            fg="gray", bg="black",
+            fullscreen_button = tk.Button(
+                root, text="Toggle Fullscreen (F11)", 
+                command=ScreenState.toggle_fullscreen,
+                bg="blue", fg="white", font=("Courier", 12)
+            )
+            fullscreen_button.pack(pady=5)
+            # forecast_button = tk.Button(root, text="5 Day Forecast", command=process_weather_entries,
+            #                     bg="blue", fg="white", font=("Courier", 12))
+            # forecast_button.pack(pady=5)
+            show_buttons = True
+        else:
+            print("[LOG] Not showing buttons")
+            show_buttons = False
+
+        if get_config_bool("show_instruction"):
+            print("[LOG] Showing instruction")
+            show_instructions = True
+            # Add instructions
+            instructions = tk.Label(
+                root, text="Press F11 to toggle fullscreen • Press Escape to exit fullscreen",
+                fg="gray", bg="black",
+                font=("Courier", 10)
+            )
+            instructions.pack(pady=5)
+        else:
+            print("[LOG] Not showing instruction")
+            show_instructions = False
+
+        # Add timestamp
+        timestamp_var = tk.StringVar()
+        timestamp_label = tk.Label(
+            root, textvariable=timestamp_var,
+            fg="yellow", bg="black",
             font=("Courier", 10)
         )
-        instructions.pack(pady=5)
-    else:
-        print("[LOG] Not showing instruction")
-        show_instructions = False
+        timestamp_label.pack(side=tk.BOTTOM, pady=10)
 
-    # Add timestamp
-    timestamp_var = tk.StringVar()
-    timestamp_label = tk.Label(
-        root, textvariable=timestamp_var,
-        fg="yellow", bg="black",
-        font=("Courier", 10)
-    )
-    timestamp_label.pack(side=tk.BOTTOM, pady=10)
+        def update_timestamp():
+            timestamp_var.set(f"Current time is {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            root.after(1000, update_timestamp)  # Update every second
 
-    def update_timestamp():
-        timestamp_var.set(f"Current time is {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        root.after(1000, update_timestamp)  # Update every second
+        update_timestamp()
 
-    update_timestamp()
+        # Set up automatic refresh every 2 minutes
+        def auto_refresh():
+            WeatherFunctions.refresh_weather()
+            timestamp_var.set(f"Auto-refreshed: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            root.after(120000, auto_refresh)  # 120000 ms = 2 minutes
 
-    # Set up automatic refresh every 2 minutes
-    def auto_refresh():
-        WeatherFunctions.refresh_weather()
-        timestamp_var.set(f"Auto-refreshed: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        root.after(120000, auto_refresh)  # 120000 ms = 2 minutes
+        def display_flash():
+            title_label.config(fg="black")
+            link_label.config(fg="black")
+            scrolling_summary.flash_black()  # Flash the scrolling summary
+            if show_instructions:
+                instructions.config(fg="black")
+            timestamp_label.config(fg="black")
+            if show_buttons:
+                refresh_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
+                fullscreen_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
+            link_label.config(fg="black")
+            if show_warnings:
+                current_warning.config(fg="black")
+                current_warning_title.config(fg="black")
+            version_label.config(fg="black", bg="black")
+            designed_by_label.config(fg="black", bg="black")
+            # fact_label.config(fg="black")
 
-    def display_flash():
-        title_label.config(fg="black")
-        link_label.config(fg="black")
-        scrolling_summary.flash_black()  # Flash the scrolling summary
-        if show_instructions:
-            instructions.config(fg="black")
-        timestamp_label.config(fg="black")
-        if show_buttons:
-            refresh_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
-            fullscreen_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
-        link_label.config(fg="black")
-        if show_warnings:
-            current_warning.config(fg="black")
-            current_warning_title.config(fg="black")
-        version_label.config(fg="black", bg="black")
-        designed_by_label.config(fg="black", bg="black")
-        # fact_label.config(fg="black")
+            # Use after() instead of sleep
+            root.after(750, restore_colors)
 
-        # Use after() instead of sleep
-        root.after(750, restore_colors)
+        def restore_colors():
+            title_label.config(fg="lime")
+            link_label.config(fg="cyan")
+            if show_instructions:
+                instructions.config(fg="gray")
+            timestamp_label.config(fg="yellow")
+            if show_buttons:
+                refresh_button.config(bg="green", fg="yellow", bd=1, highlightthickness=1)
+                fullscreen_button.config(bg="blue", fg="white", bd=1, highlightthickness=1)
+            link_label.config(fg="cyan")
+            if show_warnings:
+                current_warning.config(fg="lime")
+                current_warning_title.config(fg="lime")
+            version_label.config(fg="cyan", bg="black")
+            designed_by_label.config(fg="cyan", bg="black")
+            # fact_label.config(fg="lime")
 
-    def restore_colors():
-        title_label.config(fg="lime")
-        link_label.config(fg="cyan")
-        if show_instructions:
-            instructions.config(fg="gray")
-        timestamp_label.config(fg="yellow")
-        if show_buttons:
-            refresh_button.config(bg="green", fg="yellow", bd=1, highlightthickness=1)
-            fullscreen_button.config(bg="blue", fg="white", bd=1, highlightthickness=1)
-        link_label.config(fg="cyan")
-        if show_warnings:
-            current_warning.config(fg="lime")
-            current_warning_title.config(fg="lime")
-        version_label.config(fg="cyan", bg="black")
-        designed_by_label.config(fg="cyan", bg="black")
-        # fact_label.config(fg="lime")
+        if get_config_bool("show_cmd"):
+            print("[LOG] Showing command window")
+            CommandWindow.create_command_window()
+        else:
+            print("[LOG] Not showing command window")
 
-    if get_config_bool("show_cmd"):
-        print("[LOG] Showing command window")
-        CommandWindow.create_command_window()
-    else:
-        print("[LOG] Not showing command window")
+        # Schedule flashes every 10 minutes
+        def schedule_flash():
+            display_flash()
+            root.after(600000, schedule_flash)  # 10 minutes
 
-    # Schedule flashes every 10 minutes
-    def schedule_flash():
-        display_flash()
-        root.after(600000, schedule_flash)  # 10 minutes
+        # Start the flash cycle
+        root.after(600000, schedule_flash)
 
-    # Start the flash cycle
-    root.after(600000, schedule_flash)
+        root.after(120000, auto_refresh)  # Start auto-refresh after 2 minutes
 
-    root.after(120000, auto_refresh)  # Start auto-refresh after 2 minutes
+        weathermodechoice()
 
-    weathermodechoice()
-
-    root.mainloop()
+        root.mainloop()
 
 class CommandWindow:
     """Static-style class for command window functions"""
@@ -613,9 +615,14 @@ def webweather():
     """
 
 def start_webserver():
-    def run_server():
-        app.run(host="0.0.0.0", port=2046, debug=False, use_reloader=False)
-    threading.Thread(target=run_server, daemon=True).start()
+    if get_config_bool("webserver"):
+        def run_server():
+            app.run(host="0.0.0.0", port=2046, debug=False, use_reloader=False)
+        threading.Thread(target=run_server, daemon=True).start()
+    else:
+        print("[LOG] Not starting webserver")
+
+start_webserver()
 
 # Main execution
 
@@ -647,6 +654,10 @@ if __name__ == "__main__":
     print(f"Welcome to WeatherPeg, version {current_version}")
     print("Fetching initial weather data for webserver...")
     fetch_initial_weather_globals()
-    print("Starting GUI...")
-    display()
-   
+    if get_config_bool("show_display"):
+        print("Starting GUI...")
+        display()
+    else: 
+        print("[LOG] Not showing display")
+        while True:
+            time.sleep(1)
