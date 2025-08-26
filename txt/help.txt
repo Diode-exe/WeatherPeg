@@ -21,4 +21,6 @@ F6 to create a new commands window
 
 F11 for fullscreen
 
+Webserver runs on port 2046
+
 ===========================================
