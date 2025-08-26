@@ -2,3 +2,4 @@ requesttest.py
 /dist
 txt/history.txt
 /build
+*.spec
