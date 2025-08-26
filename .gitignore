@@ -3,3 +3,4 @@ requesttest.py
 txt/history.txt
 /build
 *.spec
+/__pycache__
