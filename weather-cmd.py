@@ -9,6 +9,7 @@ import tts_helper
 import source_helper
 import time
 import threading
+from flask import Flask
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
@@ -31,7 +32,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 1.9.3"
+current_version = "WeatherPeg Version 2.0"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -114,6 +115,7 @@ class WeatherFunctions():
 
     def refresh_weather(event=None):
         """Refresh weather data and update display"""
+        fetch_initial_weather_globals()
         weathermodechoice()
         logger()
         # random_fact()
@@ -253,6 +255,7 @@ def weathermodechoice():
                     warning_title_var.set(warning_title)
                     scrolling_summary.update_text(current_summary)
                     break
+            start_webserver()
 
             if tts_helper.get_config_bool_tts("do_tts"):
                 tts_helper.speaker(current_title)
@@ -521,6 +524,8 @@ def display():
 
     root.after(120000, auto_refresh)  # Start auto-refresh after 2 minutes
 
+    weathermodechoice()
+
     root.mainloop()
 
 class CommandWindow:
@@ -585,11 +590,63 @@ class CommandWindow:
     
         return cmd_window
 
+app = Flask(__name__)
+
+@app.route("/weather")
+def webweather():
+    print("[DEBUG] Flask route accessed!")
+    print(f"[DEBUG] current_title: {current_title}")
+    print(f"[DEBUG] current_summary: {current_summary}")
+    print(f"[DEBUG] warning_title: {warning_title}")
+    print(f"[DEBUG] warning_summary: {warning_summary}")
+    return f"""
+    <html>
+        <head><title>WeatherPeg</title></head>
+        <body>
+            <h1>Welcome to WeatherPeg on the web!</h1>
+            <p>Title: {current_title}</p>
+            <p>Summary: {current_summary}</p>
+            <p>Warnings and Watches Title: {warning_title}</p>
+            <p>Warnings and Watches Summary: {warning_summary}
+        </body>
+    </html>
+    """
+
+def start_webserver():
+    def run_server():
+        app.run(host="0.0.0.0", port=2046, debug=False, use_reloader=False)
+    threading.Thread(target=run_server, daemon=True).start()
 
 # Main execution
+
+# --- Fetch weather data for webserver globals before starting GUI ---
+def fetch_initial_weather_globals():
+    import source_helper, feedparser, requests, html, re
+    global current_title, current_summary, current_link, warning_title, warning_summary
+    try:
+        response = requests.get(source_helper.RSS_URL)
+        feed = feedparser.parse(response.content)
+        for entry in feed.entries:
+            if entry.category == "Warnings and Watches":
+                if not entry.summary == "No watches or warnings in effect.":
+                    warning_summary = entry.summary
+                if entry.summary == "No watches or warnings in effect.":
+                    warning_summary = "No watches or warnings in effect."
+                warning_title = entry.title
+        for entry in feed.entries:
+            if entry.category == "Current Conditions":
+                current_title = entry.title
+                current_link = entry.link
+                current_summary = html.unescape(entry.summary)
+                current_summary = re.sub(r'<[^>]+>', '', current_summary)
+                break
+    except Exception as e:
+        print(f"[ERROR] Could not fetch initial weather: {e}")
+
 if __name__ == "__main__":
     print(f"Welcome to WeatherPeg, version {current_version}")
-    print("Fetching initial weather data...")
+    print("Fetching initial weather data for webserver...")
+    fetch_initial_weather_globals()
     print("Starting GUI...")
     display()
-    weathermodechoice()
+   
