@@ -1,10 +1,4 @@
 requesttest.py
-dist\txt\history.txt
-txt\history.txt
-*.exe
-*.spec
-build\
-dist\
-txt/history.txt
+/dist
 txt/history.txt
 /build
