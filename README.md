@@ -10,6 +10,6 @@ Official server of WeatherPeg
 
 source.txt is where you put the link to the XML file for information sourcing. Examples in examples.txt. 
 
-Webserver runs on port 2048. 
+Webserver defaults to port 2046, but can be changed in config.txt
 
-https://localhost:2048/weather
+https://localhost:2046/weather
