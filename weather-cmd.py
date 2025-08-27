@@ -193,20 +193,43 @@ def logger():
 
 # random_fact()
 
-def get_config_bool(key):
-    configfilename = "txt/config.txt"
-    try:
-        with open(configfilename, "r") as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith(f"{key}:"):
-                    value = line.split(":", 1)[1].strip()
-                    # Convert to boolean (0 = False, 1 = True)
-                    return value == "1"
-    except FileNotFoundError:
-        print(f"[LOG] File {configfilename} not found")
-        return False
-    return False  # Default to False if not found
+
+class Config():
+    def get_config_bool(key):
+        configfilename = "txt/config.txt"
+        try:
+            with open(configfilename, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith(f"{key}:"):
+                        value = line.split(":", 1)[1].strip()
+                        # Convert to boolean (0 = False, 1 = True)
+                        return value == "1"
+        except FileNotFoundError:
+            print(f"[LOG] File {configfilename} not found")
+            return False
+        return False  # Default to False if not found
+
+    def get_config_port():
+        configfilename = "txt/config.txt"
+        try:
+            with open(configfilename, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line.lower().startswith("port:"):
+                        value = line.split(":", 1)[1].strip()
+                        try:
+                            return int(value)  # return as integer
+                        except ValueError:
+                            print(f"[LOG] Invalid port value: {value}")
+                            return None
+        except FileNotFoundError:
+            print(f"[LOG] File {configfilename} not found")
+            return None
+        
+        return None  # Default if "port:" not found
+
+port = Config.get_config_port()
 
 def main_speaker(text):
     tts_enabled = tts_helper.get_config_bool_tts("do_tts")
@@ -218,7 +241,7 @@ def main_speaker(text):
         print("[LOG] TTS is disabled in config")
 
 def weathermodechoice():
-    if get_config_bool("mode"):
+    if Config.get_config_bool("mode"):
         def get_weather():
             # mode 1
 
@@ -249,7 +272,7 @@ def weathermodechoice():
                     print("Entry summary:", current_summary)
                     print("Entry link:", current_link)
                     print("-" * 50)
-                    if get_config_bool("show_display"):
+                    if Config.get_config_bool("show_display"):
                         title_var.set(current_title)
                         link_var.set(current_link)
                         warning_var.set(warning_summary)
@@ -331,7 +354,7 @@ def display():
     global display_flash
     global refresh_button, fullscreen_button, instructions
 
-    if get_config_bool("show_display"):
+    if Config.get_config_bool("show_display"):
 
         root = tk.Tk()
         root.title("WeatherPeg")
@@ -360,7 +383,7 @@ def display():
         # Create scrolling summary (replaces the old summary_label)
         scrolling_summary = ScrollingSummary(root, current_summary, width=80, speed=150)
 
-        if get_config_bool("show_link"):
+        if Config.get_config_bool("show_link"):
             print("[LOG] Showing link")
             link_label = tk.Label(
                 root, textvariable=link_var, 
@@ -386,7 +409,7 @@ def display():
         )
         designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
 
-        if get_config_bool("show_warning"):
+        if Config.get_config_bool("show_warning"):
             print("[LOG] Showing warning label")
             show_warnings = True
             current_warning_title = tk.Label(
@@ -414,7 +437,7 @@ def display():
 
         # fact_label.pack()
 
-        if get_config_bool("show_buttons"):
+        if Config.get_config_bool("show_buttons"):
             print("[LOG] Showing buttons")
             refresh_button = tk.Button(
                 root, text="Refresh Weather (F5)", 
@@ -437,7 +460,7 @@ def display():
             print("[LOG] Not showing buttons")
             show_buttons = False
 
-        if get_config_bool("show_instruction"):
+        if Config.get_config_bool("show_instruction"):
             print("[LOG] Showing instruction")
             show_instructions = True
             # Add instructions
@@ -510,7 +533,7 @@ def display():
             designed_by_label.config(fg="cyan", bg="black")
             # fact_label.config(fg="lime")
 
-        if get_config_bool("show_cmd"):
+        if Config.get_config_bool("show_cmd"):
             print("[LOG] Showing command window")
             CommandWindow.create_command_window()
         else:
@@ -615,9 +638,9 @@ def webweather():
     """
 
 def start_webserver():
-    if get_config_bool("webserver"):
+    if Config.get_config_bool("webserver"):
         def run_server():
-            app.run(host="0.0.0.0", port=2046, debug=False, use_reloader=False)
+            app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)
         threading.Thread(target=run_server, daemon=True).start()
     else:
         print("[LOG] Not starting webserver")
@@ -628,7 +651,6 @@ start_webserver()
 
 # --- Fetch weather data for webserver globals before starting GUI ---
 def fetch_initial_weather_globals():
-    import source_helper, feedparser, requests, html, re
     global current_title, current_summary, current_link, warning_title, warning_summary
     try:
         response = requests.get(source_helper.RSS_URL)
@@ -654,7 +676,7 @@ if __name__ == "__main__":
     print(f"Welcome to WeatherPeg, version {current_version}")
     print("Fetching initial weather data for webserver...")
     fetch_initial_weather_globals()
-    if get_config_bool("show_display"):
+    if Config.get_config_bool("show_display"):
         print("Starting GUI...")
         display()
     else: 
