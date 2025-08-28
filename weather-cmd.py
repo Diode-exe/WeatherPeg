@@ -10,6 +10,7 @@ import source_helper
 import time
 import threading
 from flask import Flask
+import browser_helper
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
@@ -32,7 +33,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 2.0"
+current_version = "WeatherPeg Version 2.2"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -366,6 +367,7 @@ def display():
         root.bind("<Escape>", ScreenState.exit_fullscreen)
         root.bind("<F5>", WeatherFunctions.refresh_weather)
         root.bind("<F6>", CommandWindow.create_command_window)
+        root.bind("<F4>", lambda event: browser_helper.WebOpen.opener(port))
 
         # Create StringVar variables
         title_var = tk.StringVar(value=current_title)
@@ -452,6 +454,14 @@ def display():
                 bg="blue", fg="white", font=("Courier", 12)
             )
             fullscreen_button.pack(pady=5)
+
+            browser_button = tk.Button(
+                root, text="Open webserver page (F4)", 
+                command=lambda: browser_helper.WebOpen.opener(port),
+                bg="blue", fg="white", font=("Courier", 12)
+            )
+            browser_button.pack(pady=5)
+
             # forecast_button = tk.Button(root, text="5 Day Forecast", command=process_weather_entries,
             #                     bg="blue", fg="white", font=("Courier", 12))
             # forecast_button.pack(pady=5)
@@ -604,7 +614,7 @@ class CommandWindow:
         refresh_button = tk.Button(
             cmd_window, 
             text="Refresh Weather (F5)", 
-            command=WeatherFunctions.refresh_weather,
+            command=lambda: browser_helper.WebOpen.opener(port),
             bg="green", fg="yellow", font=("Courier", 12)
         )
         refresh_button.pack(pady=10)
@@ -612,6 +622,13 @@ class CommandWindow:
         # Exit button
         exit_btn = tk.Button(cmd_window, text="Exit", command=root.quit)
         exit_btn.pack(pady=5)
+        
+        browser_button = tk.Button(
+            cmd_window, text="Open webserver page (F4)", 
+            command=lambda: browser_helper.WebOpen.opener(port),
+            bg="blue", fg="white", font=("Courier", 12)
+        )
+        browser_button.pack(pady=5)
     
         return cmd_window
 
@@ -646,8 +663,6 @@ def start_webserver():
         print("[LOG] Not starting webserver")
 
 start_webserver()
-
-# Main execution
 
 # --- Fetch weather data for webserver globals before starting GUI ---
 def fetch_initial_weather_globals():
