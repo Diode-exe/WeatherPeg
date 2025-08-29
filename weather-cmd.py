@@ -11,6 +11,7 @@ import time
 import threading
 from flask import Flask, url_for
 import browser_helper
+from flask_socketio import SocketIO
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
@@ -33,7 +34,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 2.2"
+current_version = "WeatherPeg Version 2.3.1"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -123,6 +124,7 @@ class WeatherFunctions():
         # current_fact_var.set(current_fact)
         display_flash()
         update_display()
+        socketio.emit("weather_updated")
 
 class ScreenState():
     def toggle_fullscreen(event=None):
@@ -636,6 +638,8 @@ class CommandWindow:
 
 app = Flask(__name__)
 
+socketio = SocketIO(app)
+
 @app.route("/weather")
 def webweather():
     print("[DEBUG] Flask route accessed!")
@@ -651,6 +655,25 @@ def webweather():
         <head>
             <title>WeatherPeg</title>
             <link rel="stylesheet" href="{css_url}">
+            <meta http-equiv="refresh" content="120">
+            <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+            <script>
+                const socket = io();
+                socket.on("weather_updated", () => {{
+                    location.reload();
+                }});
+            </script>
+
+            <script>
+            const weatherData = {{
+                title: "{current_title}",
+                summary: "{current_summary}",
+                warningTitle: "{warning_title}",
+                warningSummary: "{warning_summary}",
+                lastUpdated: "{timestamp_var.get()}"
+            }};
+            </script>
+
         </head>
         <body>
             <h1>Welcome to WeatherPeg on the web!</h1>
@@ -658,6 +681,7 @@ def webweather():
             <p>Summary: {current_summary}</p>
             <p>Warnings and Watches Title: {warning_title}</p>
             <p>Warnings and Watches Summary: {warning_summary}
+            <p>Last updated: {timestamp_var.get()}</p>
         </body>
     </html>
     """
