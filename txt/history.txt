@@ -1921,3 +1921,69 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: No watches or warnings in effect.
 Logged time: Current time is 2025-08-27 22:35:03
 --------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:27:50
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:28:07
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:29:40
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:31:25
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:31:59
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:32:29
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:32:54
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:33:12
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:40:53
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:42:53
+--------------------------------------------------
+Current Conditions: Partly Cloudy, 19.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Thursday 28 August 2025 Condition: Partly Cloudy Temperature: 19.7°C Pressure / Tendency: 101.9 kPa rising Visibility: 24 km Humidity: 77 % Dewpoint: 15.6°C Wind: N 3 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-08-28 21:45:36
+--------------------------------------------------

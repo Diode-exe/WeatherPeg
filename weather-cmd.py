@@ -9,7 +9,7 @@ import tts_helper
 import source_helper
 import time
 import threading
-from flask import Flask
+from flask import Flask, url_for
 import browser_helper
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
@@ -515,6 +515,7 @@ def display():
             if show_buttons:
                 refresh_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
                 fullscreen_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
+                browser_button.config(fg="black", bg="black", bd=0, highlightthickness=0)
             link_label.config(fg="black")
             if show_warnings:
                 current_warning.config(fg="black")
@@ -535,6 +536,7 @@ def display():
             if show_buttons:
                 refresh_button.config(bg="green", fg="yellow", bd=1, highlightthickness=1)
                 fullscreen_button.config(bg="blue", fg="white", bd=1, highlightthickness=1)
+                browser_button.config(bg="blue", fg="white", bd=1, highlightthickness=1)
             link_label.config(fg="cyan")
             if show_warnings:
                 current_warning.config(fg="lime")
@@ -641,9 +643,15 @@ def webweather():
     print(f"[DEBUG] current_summary: {current_summary}")
     print(f"[DEBUG] warning_title: {warning_title}")
     print(f"[DEBUG] warning_summary: {warning_summary}")
+
+    css_url = url_for('static', filename='styles.css')
+
     return f"""
     <html>
-        <head><title>WeatherPeg</title></head>
+        <head>
+            <title>WeatherPeg</title>
+            <link rel="stylesheet" href="{css_url}">
+        </head>
         <body>
             <h1>Welcome to WeatherPeg on the web!</h1>
             <p>Title: {current_title}</p>
