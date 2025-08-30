@@ -9,9 +9,11 @@ import tts_helper
 import source_helper
 import time
 import threading
-from flask import Flask, url_for
+from flask import Flask, url_for, request
 import browser_helper
 from flask_socketio import SocketIO
+import signal
+import os
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
@@ -34,7 +36,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 2.3.1"
+current_version = "WeatherPeg Version 2.4"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -682,9 +684,20 @@ def webweather():
             <p>Warnings and Watches Title: {warning_title}</p>
             <p>Warnings and Watches Summary: {warning_summary}
             <p>Last updated: {timestamp_var.get()}</p>
+            <a id="shutdown" href="/shutdown">Shutdown the server...</a>
         </body>
     </html>
     """
+    
+@app.route("/shutdown", methods=["GET", "POST"])
+def shutdown():
+    if request.remote_addr != "127.0.0.1":
+        return "Forbidden", 403
+
+    # Schedule shutdown after response is sent
+    threading.Timer(1.0, lambda: os.kill(os.getpid(), signal.SIGTERM)).start()
+
+    return "Server is shutting down..."
 
 def start_webserver():
     if Config.get_config_bool("webserver"):

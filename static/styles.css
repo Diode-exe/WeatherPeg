@@ -14,3 +14,8 @@ p {
     margin: 8px 0;
     text-align: center;
 }
+
+#shutdown {
+    display: block;
+    text-align: center;
+}
