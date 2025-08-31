@@ -514,7 +514,8 @@ def display():
 
         def display_flash():
             title_label.config(fg="black")
-            link_label.config(fg="black")
+            if Config.get_config_bool("show_link"):
+                link_label.config(fg="black")
             scrolling_summary.flash_black()  # Flash the scrolling summary
             if show_instructions:
                 instructions.config(fg="black")
@@ -523,7 +524,8 @@ def display():
                 refresh_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
                 fullscreen_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
                 browser_button.config(fg="black", bg="black", bd=0, highlightthickness=0)
-            link_label.config(fg="black")
+            if Config.get_config_bool("show_link"):
+                link_label.config(fg="black")
             if show_warnings:
                 current_warning.config(fg="black")
                 current_warning_title.config(fg="black")
@@ -536,7 +538,8 @@ def display():
 
         def restore_colors():
             title_label.config(fg="lime")
-            link_label.config(fg="cyan")
+            if Config.get_config_bool("show_link"):
+                link_label.config(fg="cyan")
             if show_instructions:
                 instructions.config(fg="gray")
             timestamp_label.config(fg="yellow")
@@ -544,7 +547,8 @@ def display():
                 refresh_button.config(bg="green", fg="yellow", bd=1, highlightthickness=1)
                 fullscreen_button.config(bg="blue", fg="white", bd=1, highlightthickness=1)
                 browser_button.config(bg="blue", fg="white", bd=1, highlightthickness=1)
-            link_label.config(fg="cyan")
+            if Config.get_config_bool("show_link"):
+                link_label.config(fg="cyan")
             if show_warnings:
                 current_warning.config(fg="lime")
                 current_warning_title.config(fg="lime")
