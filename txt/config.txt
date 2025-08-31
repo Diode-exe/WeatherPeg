@@ -8,3 +8,4 @@ show_cmd: 1
 show_display: 1
 webserver: 1
 port: 2046
+write_log: 1

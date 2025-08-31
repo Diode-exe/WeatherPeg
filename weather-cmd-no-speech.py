@@ -5,7 +5,7 @@ import html
 import tkinter as tk
 import datetime
 import os
-import tts_helper
+# import tts_helper
 import source_helper
 import time
 import threading
@@ -239,14 +239,14 @@ class Config():
 
 port = Config.get_config_port()
 
-def main_speaker(text):
-    tts_enabled = tts_helper.get_config_bool_tts("do_tts")
-    print(f"[LOG] TTS enabled: {tts_enabled}")  # Debug line
-    if tts_enabled:
-        print(f"[LOG] About to speak: {text}")  # Debug line
-        tts_helper.speaker(text)
-    else:
-        print("[LOG] TTS is disabled in config")
+# def main_speaker(text):
+#     tts_enabled = tts_helper.get_config_bool_tts("do_tts")
+#     print(f"[LOG] TTS enabled: {tts_enabled}")  # Debug line
+#     if tts_enabled:
+#         print(f"[LOG] About to speak: {text}")  # Debug line
+#         tts_helper.speaker(text)
+#     else:
+#         print("[LOG] TTS is disabled in config")
 
 def weathermodechoice():
     if Config.get_config_bool("mode"):
@@ -288,11 +288,11 @@ def weathermodechoice():
                         scrolling_summary.update_text(current_summary)
                         break
             
-            if tts_helper.get_config_bool_tts("do_tts"):
-                tts_helper.speaker(current_title)
-                tts_helper.speaker(current_summary)
-                tts_helper.speaker(warning_title)
-                tts_helper.speaker(warning_summary)
+            # if tts_helper.get_config_bool_tts("do_tts"):
+            #     tts_helper.speaker(current_title)
+            #     tts_helper.speaker(current_summary)
+            #     tts_helper.speaker(warning_title)
+            #     tts_helper.speaker(warning_summary)
         get_weather()
         update_display()
     else:
@@ -336,9 +336,9 @@ def weathermodechoice():
                                 update_display()
                             update_gui()
 
-                            if tts_helper.get_config_bool_tts("do_tts"):
-                                tts_helper.speaker(current_title)
-                                tts_helper.speaker(current_summary)
+                            # if tts_helper.get_config_bool_tts("do_tts"):
+                            #     tts_helper.speaker(current_title)
+                            #     tts_helper.speaker(current_summary)
                             
                             index = (index + 1) % len(weather_entries)
                             
