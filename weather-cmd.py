@@ -36,7 +36,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 2.5"
+current_version = "WeatherPeg Version 2.6.1"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
