@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WeatherPeg</title>
+    <link rel="stylesheet" href="{{ css_url }}">
+    <meta http-equiv="refresh" content="120">
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        socket.on("weather_updated", () => {
+            location.reload();
+        });
+    </script>
+
+    <script>
+    const weatherData = {
+        title: "{{ current_title }}",
+        summary: "{{ current_summary }}",
+        warningTitle: "{{ warning_title }}",
+        warningSummary: "{{ warning_summary }}",
+        lastUpdated: "{{ last_updated }}"
+    };
+    </script>
+</head>
+<body>
+    <h1>Welcome to WeatherPeg on the web!</h1>
+    <p>Title: {{ current_title }}</p>
+    <p>Summary: {{ current_summary }}</p>
+    <p>Warnings and Watches Title: {{ warning_title }}</p>
+    <p>Warnings and Watches Summary: {{ warning_summary }}</p>
+    <p>Last updated: {{ last_updated }}</p>
+    <a id="shutdown" href="/shutdown">Shutdown the server...</a>
+</body>
+</html>

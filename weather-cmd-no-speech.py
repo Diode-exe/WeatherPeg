@@ -25,7 +25,7 @@ urllib3_cn.allowed_gai_family = allowed_gai_family
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
 # Leaving this in just for reference in case I lose the URLs
-# Don't use these, it' all handled in source_helper.py
+# Don't use these, it's all handled in source_helper.py
 
 # Global variables to store weather data
 current_entry = None
