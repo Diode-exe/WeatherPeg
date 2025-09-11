@@ -649,7 +649,7 @@ from flask import render_template, url_for
 
 @app.route("/weather")
 def webweather():
-    print("[LOG] Flask route accessed!")
+    print("[DEBUG] Flask route accessed!")
     css_url = url_for('static', filename='styles.css')
 
     return render_template(
