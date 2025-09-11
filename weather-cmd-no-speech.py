@@ -14,6 +14,13 @@ import browser_helper
 from flask_socketio import SocketIO
 import signal
 import os
+import socket
+import urllib3.util.connection as urllib3_cn
+
+def allowed_gai_family():
+    return socket.AF_INET  # force IPv4 only
+
+urllib3_cn.allowed_gai_family = allowed_gai_family
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
