@@ -6,6 +6,8 @@ Everything is included, just run the .exe
 
 There is no exe for Linux, as, obviously, exe's don't run on Linux. weather-cmd-no-speech.py is for Linux. 
 
+The exe is outdated right now. DO NOT DOWNLOAD THE EXE
+
 https://discord.gg/2M4PxAuQt8
 
 Official server of WeatherPeg
