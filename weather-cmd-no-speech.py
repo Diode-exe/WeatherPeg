@@ -43,7 +43,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 2.5"
+current_version = "WeatherPeg Version 2.7"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -300,6 +300,9 @@ def weathermodechoice():
             #     tts_helper.speaker(current_summary)
             #     tts_helper.speaker(warning_title)
             #     tts_helper.speaker(warning_summary)
+
+            dlhistory()
+
         get_weather()
         update_display()
     else:
@@ -745,6 +748,30 @@ def fetch_initial_weather_globals():
                 break
     except Exception as e:
         print(f"[ERROR] Could not fetch initial weather: {e}")
+
+def dlhistory():
+    url = source_helper.RSS_URL
+    filename = "history/weatherpegsource.xml"
+
+    # If file exists, append a number
+    try:
+        base, ext = os.path.splitext(filename)
+        counter = 1
+        new_filename = filename
+
+
+        while os.path.exists(new_filename):
+            new_filename = f"{base}_{counter}{ext}"
+            counter += 1
+    except FileNotFoundError:
+        print(f"[LOG] {filename} not found, so creating")
+
+    response = requests.get(url, stream=True)
+    with open(new_filename, "wb") as f:
+        for chunk in response.iter_content(chunk_size=8192):
+            f.write(chunk)
+
+    print(f"Download complete! Saved as {new_filename}")
 
 if __name__ == "__main__":
     print(f"Welcome to WeatherPeg, version {current_version}")
