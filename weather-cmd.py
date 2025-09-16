@@ -645,7 +645,7 @@ class CommandWindow:
 
 app = Flask(__name__)
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode="threading")
 
 from flask import render_template, url_for
 
