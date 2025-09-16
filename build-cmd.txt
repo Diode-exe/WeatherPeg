@@ -1,1 +1,1 @@
-pyinstaller --onefile --collect-all feedparser --collect-all requests weather-cmd.py
+pyinstaller weather-cmd.spec
