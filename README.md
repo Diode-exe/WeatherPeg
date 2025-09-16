@@ -8,6 +8,8 @@ There is no exe for Linux, as, obviously, exe's don't run on Linux. weather-cmd-
 
 I fixed the exe. Check the git blame to see what I did. 
 
+Build the exe with build-cmd.txt if you want. 
+
 https://discord.gg/2M4PxAuQt8
 
 Official server of WeatherPeg
