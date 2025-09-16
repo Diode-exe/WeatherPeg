@@ -21,3 +21,7 @@ This may work with other weather services, I don't know. It will work for Canadi
 Webserver defaults to port 2046, but can be changed in config.txt
 
 https://localhost:2046/weather
+
+### Note
+
+WeatherPeg is failed port of WeatherPeg to PyQT. 
