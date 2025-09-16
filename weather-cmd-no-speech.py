@@ -16,6 +16,7 @@ import signal
 import os
 import socket
 import urllib3.util.connection as urllib3_cn
+from flask import render_template, url_for
 
 def allowed_gai_family():
     return socket.AF_INET  # force IPv4 only
@@ -662,49 +663,18 @@ socketio = SocketIO(app, async_mode="threading")
 @app.route("/weather")
 def webweather():
     print("[DEBUG] Flask route accessed!")
-    print(f"[DEBUG] current_title: {current_title}")
-    print(f"[DEBUG] current_summary: {current_summary}")
-    print(f"[DEBUG] warning_title: {warning_title}")
-    print(f"[DEBUG] warning_summary: {warning_summary}")
-
     css_url = url_for('static', filename='styles.css')
 
-    return f"""
-    <html>
-        <head>
-            <title>WeatherPeg</title>
-            <link rel="stylesheet" href="{css_url}">
-            <meta http-equiv="refresh" content="120">
-            <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-            <script>
-                const socket = io();
-                socket.on("weather_updated", () => {{
-                    location.reload();
-                }});
-            </script>
+    return render_template(
+        "weather.html",
+        css_url=css_url,
+        current_title=current_title,
+        current_summary=current_summary,
+        warning_title=warning_title,
+        warning_summary=warning_summary,
+        last_updated=timestamp_var.get()
+    )
 
-            <script>
-            const weatherData = {{
-                title: "{current_title}",
-                summary: "{current_summary}",
-                warningTitle: "{warning_title}",
-                warningSummary: "{warning_summary}",
-                lastUpdated: "{timestamp_var.get()}"
-            }};
-            </script>
-
-        </head>
-        <body>
-            <h1>Welcome to WeatherPeg on the web!</h1>
-            <p>Title: {current_title}</p>
-            <p>Summary: {current_summary}</p>
-            <p>Warnings and Watches Title: {warning_title}</p>
-            <p>Warnings and Watches Summary: {warning_summary}
-            <p>Last updated: {timestamp_var.get()}</p>
-            <a id="shutdown" href="/shutdown">Shutdown the server...</a>
-        </body>
-    </html>
-    """
     
 @app.route("/shutdown", methods=["GET", "POST"])
 def shutdown():

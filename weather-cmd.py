@@ -14,6 +14,7 @@ import browser_helper
 from flask_socketio import SocketIO
 import signal
 import os
+from flask import render_template, url_for
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
@@ -647,7 +648,7 @@ app = Flask(__name__)
 
 socketio = SocketIO(app, async_mode="threading")
 
-from flask import render_template, url_for
+
 
 @app.route("/weather")
 def webweather():
