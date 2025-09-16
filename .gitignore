@@ -2,11 +2,7 @@ requesttest.py
 /dist
 txt/history.txt
 /build
-*.spec
 /__pycache__
-/dist
-/dist
 txt/history.txt
-txt/history.txt
-radar.gif
+*.gif
 *.xml
