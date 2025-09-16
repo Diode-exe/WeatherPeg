@@ -24,4 +24,4 @@ https://localhost:2046/weather
 
 ### Note
 
-WeatherPeg is failed port of WeatherPeg to PyQT. 
+weather-qt.py is failed port of WeatherPeg to PyQT. If anyone can help with that, I'd appreciate it. 
