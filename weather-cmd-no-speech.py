@@ -43,7 +43,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 2.7"
+current_version = "WeatherPeg Version 2.7.1"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -657,7 +657,7 @@ class CommandWindow:
 
 app = Flask(__name__)
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode="threading")
 
 @app.route("/weather")
 def webweather():
