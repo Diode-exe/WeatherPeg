@@ -682,7 +682,6 @@ def webweather():
         warning_summary=warning_summary,
         last_updated=timestamp_var.get()
     )
-
     
 @app.route("/shutdown", methods=["GET", "POST"])
 def shutdown():
