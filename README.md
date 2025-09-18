@@ -25,3 +25,7 @@ https://localhost:2046/weather
 ### Note
 
 weather-qt.py is failed port of WeatherPeg to PyQT. If anyone can help with that, I'd appreciate it. 
+
+### Hotkeys
+
+F5 to manually refresh, F8 to switch between widget and full mode, F11 for fullscreen, Escape to leave fullscreen, F6 to open the external command window, F4 to open the webserver page. 
