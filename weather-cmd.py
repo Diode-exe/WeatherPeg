@@ -13,8 +13,10 @@ from flask import Flask, url_for, request
 import browser_helper
 from flask_socketio import SocketIO
 import signal
-import os
-from flask import render_template, url_for
+from flask import render_template
+import subprocess
+import sys
+from win11toast import toast
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
@@ -37,7 +39,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 2.7.1"
+current_version = "WeatherPeg Version 2.8"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -264,6 +266,8 @@ def weathermodechoice():
                     if entry.summary == "No watches or warnings in effect.":
                         warning_summary = "No watches or warnings in effect."
                     warning_title = entry.title
+                    if not "No watches" in warning_title:
+                        threading.Thread(target=threading_warning_notif, daemon=True).start()
 
             for entry in feed.entries:
                 if entry.category == "Current Conditions":
@@ -378,6 +382,7 @@ def display():
         root.bind("<F5>", WeatherFunctions.refresh_weather)
         root.bind("<F6>", CommandWindow.create_command_window)
         root.bind("<F4>", lambda event: browser_helper.WebOpen.opener(port))
+        root.bind("<F8>", open_widget)
 
         # Create StringVar variables
         title_var = tk.StringVar(value=current_title)
@@ -471,6 +476,13 @@ def display():
                 bg="blue", fg="white", font=("Courier", 12)
             )
             browser_button.pack(pady=5)
+
+            widget_button = tk.Button(
+                root, text="Open widget mode (F8)", 
+                command=open_widget,
+                bg="blue", fg="white", font=("Courier", 12)
+            )
+            widget_button.pack(pady=5)
 
             # forecast_button = tk.Button(root, text="5 Day Forecast", command=process_weather_entries,
             #                     bg="blue", fg="white", font=("Courier", 12))
@@ -641,6 +653,12 @@ class CommandWindow:
             bg="blue", fg="white", font=("Courier", 12)
         )
         browser_button.pack(pady=5)
+        widget_button = tk.Button(
+            cmd_window, text="Open widget mode (F8)", 
+            command=open_widget,
+            bg="blue", fg="white", font=("Courier", 12)
+        )
+        widget_button.pack(pady=5)
     
         return cmd_window
 
@@ -732,6 +750,18 @@ def dlhistory():
             f.write(chunk)
 
     print(f"Download complete! Saved as {new_filename}")
+
+def open_widget(event=None):
+    print("[LOG] Opening the Desktop Widget")
+    subprocess.Popen(["python", "weather-widget.py"])
+    sys.exit()
+
+def threading_warning_notif(event=None):
+    threading.Thread(target=warning_notif, daemon=True).start()
+
+def warning_notif(event=None):
+    toast("Weather Warning!", "WeatherPeg has detected a potential weather warning or watch!" \
+           "Return to WeatherPeg and press F8 to open the full version!")
 
 if __name__ == "__main__":
     print(f"Welcome to WeatherPeg, version {current_version}")
