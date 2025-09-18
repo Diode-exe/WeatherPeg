@@ -4,7 +4,7 @@
 
 Everything is included, just run the .exe
 
-There is no exe for Linux, as, obviously, exe's don't run on Linux. weather-cmd-no-speech.py is for Linux. 
+There is no exe for Linux, as, obviously, exe's don't run on Linux. weather-cmd-no-speech.py is for Linux, no speech the API I use for speech is from win32api 
 
 I fixed the exe. Check the git blame to see what I did. 
 
