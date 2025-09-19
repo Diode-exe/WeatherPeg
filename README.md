@@ -8,7 +8,7 @@ There is no exe for Linux, as, obviously, exe's don't run on Linux. weather-cmd-
 
 I fixed the exe. Check the git blame to see what I did. 
 
-Build the exe with build-cmd.txt if you want. 
+Use build.py for building both console and no console windows, or use build.txt for just the console version. 
 
 https://discord.gg/2M4PxAuQt8
 
