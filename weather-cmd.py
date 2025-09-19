@@ -9,13 +9,12 @@ import tts_helper
 import source_helper
 import time
 import threading
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, render_template
 import browser_helper
 from flask_socketio import SocketIO
 import signal
-from flask import render_template
-import subprocess
 import sys
+import subprocess
 from win11toast import toast
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
@@ -666,8 +665,6 @@ app = Flask(__name__)
 
 socketio = SocketIO(app, async_mode="threading")
 
-
-
 @app.route("/weather")
 def webweather():
     print("[DEBUG] Flask route accessed!")
@@ -759,8 +756,7 @@ def threading_warning_notif(event=None):
     threading.Thread(target=warning_notif, daemon=True).start()
 
 def warning_notif(event=None):
-    toast("Weather Warning!", "WeatherPeg has detected a potential weather warning or watch!" \
-           "Return to WeatherPeg and press F8 to open the full version!")
+    toast("Weather Warning!", "WeatherPeg has detected a potential weather warning or watch!")
 
 if __name__ == "__main__":
     print(f"Welcome to WeatherPeg, version {current_version}")
