@@ -4,6 +4,4 @@ txt/history.txt
 /build
 /__pycache__
 txt/history.txt
-*.gif
 *.xml
-*.png
