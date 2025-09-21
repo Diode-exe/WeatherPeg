@@ -29,3 +29,8 @@ weather-qt.py is failed port of WeatherPeg to PyQT.
 ### Hotkeys
 
 F5 to manually refresh, F8 to switch between widget and full mode, F11 for fullscreen, Escape to leave fullscreen, F6 to open the external command window, F4 to open the webserver page. 
+
+## Screenshots
+
+![screenshot of full mode of WeatherPeg](images/fullmode.png)
+![screenshot of widget mode](images/widgetmode.png)
