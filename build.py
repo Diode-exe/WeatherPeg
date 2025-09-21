@@ -9,3 +9,5 @@ if __name__ == "__main__":
     print("Console version done building")
     build("WeatherPeg-windowed.spec")
     print("Console-less version done building")
+    build("WeatherPeg-widget.spec")
+    print("Widget done building")

@@ -381,7 +381,7 @@ def display():
         root.bind("<F5>", WeatherFunctions.refresh_weather)
         root.bind("<F6>", CommandWindow.create_command_window)
         root.bind("<F4>", lambda event: browser_helper.WebOpen.opener(port))
-        root.bind("<F8>", open_widget)
+        # root.bind("<F8>", open_widget)
 
         # Create StringVar variables
         title_var = tk.StringVar(value=current_title)
@@ -476,12 +476,12 @@ def display():
             )
             browser_button.pack(pady=5)
 
-            widget_button = tk.Button(
-                root, text="Open widget mode (F8)", 
-                command=open_widget,
-                bg="blue", fg="white", font=("Courier", 12)
-            )
-            widget_button.pack(pady=5)
+            # widget_button = tk.Button(
+            #     root, text="Open widget mode (F8)", 
+            #     command=open_widget,
+            #     bg="blue", fg="white", font=("Courier", 12)
+            # )
+            # widget_button.pack(pady=5)
 
             # forecast_button = tk.Button(root, text="5 Day Forecast", command=process_weather_entries,
             #                     bg="blue", fg="white", font=("Courier", 12))
@@ -652,12 +652,12 @@ class CommandWindow:
             bg="blue", fg="white", font=("Courier", 12)
         )
         browser_button.pack(pady=5)
-        widget_button = tk.Button(
-            cmd_window, text="Open widget mode (F8)", 
-            command=open_widget,
-            bg="blue", fg="white", font=("Courier", 12)
-        )
-        widget_button.pack(pady=5)
+        # widget_button = tk.Button(
+        #     cmd_window, text="Open widget mode (F8)", 
+        #     command=open_widget,
+        #     bg="blue", fg="white", font=("Courier", 12)
+        # )
+        # widget_button.pack(pady=5)
     
         return cmd_window
 
@@ -747,10 +747,14 @@ def dlhistory():
 
     print(f"Download complete! Saved as {new_filename}")
 
-def open_widget(event=None):
-    print("[LOG] Opening the Desktop Widget")
-    subprocess.Popen(["python", "weather-widget.py"])
-    sys.exit()
+# def open_widget(event=None):
+#     try:
+#         exe_path = os.path.join(os.path.dirname(sys.executable), "weather-widget.exe")
+#         subprocess.Popen([exe_path])
+#         sys.exit()
+#     except FileNotFoundError:
+#         subprocess.Popen(["python", "weatherwidget.py"])
+#         sys.exit()
 
 def threading_warning_notif(event=None):
     threading.Thread(target=warning_notif, daemon=True).start()
