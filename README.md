@@ -22,6 +22,8 @@ Webserver defaults to port 2046, but can be changed in config.txt
 
 https://localhost:2046/weather
 
+The delay numbers in config.txt are in milliseconds
+
 ### Note
 
 weather-qt.py is failed port of WeatherPeg to PyQT.
