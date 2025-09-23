@@ -14,6 +14,7 @@ import browser_helper
 from flask_socketio import SocketIO
 import signal
 from win11toast import toast
+import radar_helper
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
@@ -38,7 +39,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 2.8"
+current_version = "WeatherPeg Version 3.0"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -408,6 +409,7 @@ def display():
         root.bind("<F5>", WeatherFunctions.refresh_weather)
         root.bind("<F6>", CommandWindow.create_command_window)
         root.bind("<F4>", lambda event: browser_helper.WebOpen.opener(port))
+        root.bind("<F2>", radar_helper.open_radar)
         # root.bind("<F8>", open_widget)
 
         # Create StringVar variables
@@ -515,6 +517,13 @@ def display():
             #                     bg="blue", fg="white", font=("Courier", 12))
             # forecast_button.pack(pady=5)
             show_buttons = True
+
+            radar_button = tk.Button(
+                root, text="Open radar (F2)", 
+                command=radar_helper.open_radar,
+                bg="blue", fg="white", font=("Courier", 12)
+            )
+            radar_button.pack(pady=5)
         else:
             print("[LOG] Not showing buttons")
             show_buttons = False

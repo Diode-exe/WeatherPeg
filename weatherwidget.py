@@ -10,7 +10,7 @@ import datetime
 
 global response, feed, warning_title, warning_summary, current_title, title_var, warning_title_var
 
-current_version = "WeatherPeg Version 2.8"
+current_version = "WeatherPeg Version 3.0"
 
 def dldata(event=None):
     print("[LOG] Getting new data...")

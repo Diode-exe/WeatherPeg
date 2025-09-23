@@ -1,24 +1,33 @@
 import asyncio
 from env_canada import ECRadar
-from PIL import Image, ImageSequence
-import time
+from PIL import Image
+import os
+import source_helper
 
 async def fetch_radar():
-    # Centered on Winnipeg (example)—adjust lat/lon to your area
-    radar = ECRadar(coordinates=(49.8951, -97.1384))  
-    animated_gif = await radar.get_loop()         # multi-frame animation
-    latest_png = await radar.get_latest_frame()   # single-frame image
-    # Save them to disk
-    with open("radar.gif", "wb") as f:
-        f.write(animated_gif)
-    with open("radar_latest.png", "wb") as f:
+    radar = ECRadar(coordinates=(source_helper.coordinates))
+    latest_png = await radar.get_latest_frame()
+
+    filename = "images/radar_img.png"
+    base, ext = os.path.splitext(filename)
+    counter = 1
+    new_filename = filename
+
+    # Find a unique filename
+    while os.path.exists(new_filename):
+        new_filename = f"{base}_{counter}{ext}"
+        counter += 1
+
+    # Write the radar image
+    with open(new_filename, "wb") as f:
         f.write(latest_png)
 
-asyncio.run(fetch_radar())
-# img = Image.open("radar_latest.png")  # open an image file
-# img.show()
-gif = Image.open("radar.gif")
-for i, frame in enumerate(ImageSequence.Iterator(gif)):
-    print(f"Frame {i}: size={frame.size}, mode={frame.mode}")
-    frame.show()
-    time.sleep(0.1)
+    return new_filename  # return the actual filename
+
+def open_radar(event=None):
+    # Run async function and get filename
+    new_filename = asyncio.run(fetch_radar())
+
+    # Open and show image
+    img = Image.open(new_filename)
+    img.show()
