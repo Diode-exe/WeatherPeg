@@ -2047,3 +2047,21 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: No watches or warnings in effect.
 Logged time: Current time is 2025-09-11 14:41:54
 --------------------------------------------------
+Current Conditions: Mist, 15.0°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CDT Tuesday 23 September 2025 Condition: Mist Temperature: 15.0°C Pressure / Tendency: 101.7 kPa rising Visibility: 1.6 km Humidity: 100 % Dewpoint: 15.0°C Wind: N 16 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-09-23 09:46:34
+--------------------------------------------------
+Current Conditions: Mist, 15.0°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CDT Tuesday 23 September 2025 Condition: Mist Temperature: 15.0°C Pressure / Tendency: 101.7 kPa rising Visibility: 1.6 km Humidity: 100 % Dewpoint: 15.0°C Wind: N 16 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-09-23 09:49:45
+--------------------------------------------------
+Current Conditions: Mist, 15.0°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CDT Tuesday 23 September 2025 Condition: Mist Temperature: 15.0°C Pressure / Tendency: 101.7 kPa rising Visibility: 1.6 km Humidity: 100 % Dewpoint: 15.0°C Wind: N 16 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-09-23 09:49:49
+--------------------------------------------------

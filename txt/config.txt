@@ -9,3 +9,6 @@ show_display: 1
 webserver: 1
 port: 2046
 write_log: 1
+show_scroller: 1
+refresh_delay: 120000
+flash_delay: 600000

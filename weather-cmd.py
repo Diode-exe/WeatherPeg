@@ -13,14 +13,14 @@ from flask import Flask, url_for, request, render_template
 import browser_helper
 from flask_socketio import SocketIO
 import signal
-import sys
-import subprocess
 from win11toast import toast
 
 # RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
 # RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
 # Leaving this in just for reference in case I lose the URLs
-# Don't use these, it' all handled in source_helper.py
+# Don't use these, it's all handled in source_helper.py
+
+# https://github.com/Diode-exe/WeatherPeg
 
 # Global variables to store weather data
 current_entry = None
@@ -115,7 +115,8 @@ class WeatherFunctions():
     # this does not use self, for the record
     def update_forecast():
         title_var.set(current_title)
-        scrolling_summary.update_text(current_summary)
+        if Config.get_config_bool("show_scroller"):
+            scrolling_summary.update_text(current_summary)
         warning_var.set("")
         warning_title_var.set("")
 
@@ -238,6 +239,27 @@ class Config():
             return None
         
         return None  # Default if "port:" not found
+    
+    def get_config_value(key, default=None):
+        configfilename = "txt/config.txt"
+        try:
+            with open(configfilename, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith(f"{key}:"):
+                        value = line.split(":", 1)[1].strip()
+                        # Try to convert to int if possible
+                        if value.isdigit():
+                            return int(value)
+                        try:
+                            return float(value)  # handles decimal numbers
+                        except ValueError:
+                            return value  # fallback to raw string
+        except FileNotFoundError:
+            print(f"[LOG] File {configfilename} not found")
+            return default
+        return default
+
 
 port = Config.get_config_port()
 
@@ -288,7 +310,8 @@ def weathermodechoice():
                         link_var.set(current_link)
                         warning_var.set(warning_summary)
                         warning_title_var.set(warning_title)
-                        scrolling_summary.update_text(current_summary)
+                        if Config.get_config_bool("show_scroller"):
+                            scrolling_summary.update_text(current_summary)
                         break
             
             if tts_helper.get_config_bool_tts("do_tts"):
@@ -337,7 +360,8 @@ def weathermodechoice():
                                 link_var.set(current_link)
                                 warning_var.set(current_summary)
                                 warning_title_var.set(current_title)
-                                scrolling_summary.update_text(current_summary)
+                                if Config.get_config_bool("show_scroller"):
+                                    scrolling_summary.update_text(current_summary)
                                 
                                 update_display()
                             update_gui()
@@ -363,8 +387,11 @@ def weathermodechoice():
         cycle_weather_entries()
 pass
 
+refresh_delay = Config.get_config_value("refresh_delay", 120000)
+flash_delay = Config.get_config_value("flash_delay", 120000)
 def display():
-    global root, title_var, summary_var, link_var, scrolling_summary, timestamp_var, warning_var, current_warning, current_fact_var, warning_title_var
+    global root, title_var, summary_var, link_var, scrolling_summary, timestamp_var, warning_var
+    global current_warning, current_fact_var, warning_title_var
     global display_flash
     global refresh_button, fullscreen_button, instructions
 
@@ -397,7 +424,8 @@ def display():
         title_label.pack()
 
         # Create scrolling summary (replaces the old summary_label)
-        scrolling_summary = ScrollingSummary(root, current_summary, width=80, speed=150)
+        if Config.get_config_bool("show_scroller"):
+            scrolling_summary = ScrollingSummary(root, current_summary, width=80, speed=150)
 
         if Config.get_config_bool("show_link"):
             print("[LOG] Showing link")
@@ -524,12 +552,13 @@ def display():
         def auto_refresh():
             WeatherFunctions.refresh_weather()
             timestamp_var.set(f"Auto-refreshed: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-            root.after(120000, auto_refresh)  # 120000 ms = 2 minutes
+            root.after(refresh_delay, auto_refresh)  # 120000 ms = 2 minutes
 
         def display_flash():
             title_label.config(fg="black")
             link_label.config(fg="black")
-            scrolling_summary.flash_black()  # Flash the scrolling summary
+            if Config.get_config_bool("show_scroller"):
+                scrolling_summary.flash_black()  # Flash the scrolling summary
             if show_instructions:
                 instructions.config(fg="black")
             timestamp_label.config(fg="black")
