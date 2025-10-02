@@ -1,1 +1,0 @@
-pyinstaller weather-cmd.spec
