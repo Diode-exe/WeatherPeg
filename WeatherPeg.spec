@@ -1,50 +1,60 @@
-# -*- mode: python ; coding: utf-8 -*-
+# weatherpeg_combined.spec
+# Single spec file to build both console and console-less executables
+
+block_cipher = None
 
 a = Analysis(
-    ['weather-cmd.py'],  # just pick ONE main script to satisfy Analysis
+    ['weather-cmd.py'],  # replace with your WeatherPeg entrypoint
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[
+        ('templates/*', 'templates'),  # include Flask templates
+        ('static/*', 'static'),        # include Flask static files
+    ],
     hiddenimports=['engineio.async_drivers.threading'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
-    noarchive=False,
-    optimize=0,
+    win_no_prefer_redirects=False,
+    win_private_assemblies=False,
+    cipher=block_cipher,
 )
 
-pyz = PYZ(a.pure)
+pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
-# Console EXE
+# Console build
 exe_console = EXE(
     pyz,
-    [('weather-cmd', 'weather-cmd.py', 'PYTHON')],
+    a.scripts,
     a.binaries,
+    a.zipfiles,
     a.datas,
     [],
-    name='WeatherPeg-console',
-    console=True,
+    name='WeatherPeg_console',
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=True,   # Console version
 )
 
-# Windowed EXE
-exe_windowed = EXE(
+# Console-less build
+exe_noconsole = EXE(
     pyz,
-    [('weather-cmd', 'weather-cmd.py', 'PYTHON')],
+    a.scripts,
     a.binaries,
+    a.zipfiles,
     a.datas,
     [],
-    name='WeatherPeg-windowed',
-    console=False,
-)
-
-# Widget EXE
-exe_widget = EXE(
-    pyz,
-    [('weatherwidget', 'weatherwidget.py', 'PYTHON')],
-    a.binaries,
-    a.datas,
-    [],
-    name='WeatherPeg-widget',
-    console=False,
+    name='WeatherPeg',
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=False,  # Console-less version
+    disable_windowed_traceback=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
 )

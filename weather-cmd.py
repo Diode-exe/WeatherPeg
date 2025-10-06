@@ -4,7 +4,7 @@ import re
 import html
 import tkinter as tk
 import datetime
-import os
+import os, sys
 import tts_helper
 import source_helper
 import time
@@ -39,7 +39,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 3.0"
+current_version = "WeatherPeg Version 3.1"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -394,7 +394,7 @@ def display():
     global root, title_var, summary_var, link_var, scrolling_summary, timestamp_var, warning_var
     global current_warning, current_fact_var, warning_title_var
     global display_flash
-    global refresh_button, fullscreen_button, instructions
+    global refresh_button, fullscreen_button, instructions, browser_button
 
     if Config.get_config_bool("show_display"):
 
@@ -482,51 +482,8 @@ def display():
         #                 padx=10, pady=10, wraplength=750)
 
         # fact_label.pack()
-
-        if Config.get_config_bool("show_buttons"):
-            print("[LOG] Showing buttons")
-            refresh_button = tk.Button(
-                root, text="Refresh Weather (F5)", 
-                command=WeatherFunctions.refresh_weather,
-                bg="green", fg="yellow", font=("Courier", 12)
-            )
-            refresh_button.pack(pady=10)
-
-            fullscreen_button = tk.Button(
-                root, text="Toggle Fullscreen (F11)", 
-                command=ScreenState.toggle_fullscreen,
-                bg="blue", fg="white", font=("Courier", 12)
-            )
-            fullscreen_button.pack(pady=5)
-
-            browser_button = tk.Button(
-                root, text="Open webserver page (F4)", 
-                command=lambda: browser_helper.WebOpen.opener(port),
-                bg="blue", fg="white", font=("Courier", 12)
-            )
-            browser_button.pack(pady=5)
-
-            # widget_button = tk.Button(
-            #     root, text="Open widget mode (F8)", 
-            #     command=open_widget,
-            #     bg="blue", fg="white", font=("Courier", 12)
-            # )
-            # widget_button.pack(pady=5)
-
-            # forecast_button = tk.Button(root, text="5 Day Forecast", command=process_weather_entries,
-            #                     bg="blue", fg="white", font=("Courier", 12))
-            # forecast_button.pack(pady=5)
-            show_buttons = True
-
-            radar_button = tk.Button(
-                root, text="Open radar (F2)", 
-                command=radar_helper.open_radar,
-                bg="blue", fg="white", font=("Courier", 12)
-            )
-            radar_button.pack(pady=5)
-        else:
-            print("[LOG] Not showing buttons")
-            show_buttons = False
+        print("[LOG] Not showing buttons")
+        show_buttons = False
 
         if Config.get_config_bool("show_instruction"):
             print("[LOG] Showing instruction")
@@ -679,7 +636,48 @@ class CommandWindow:
             bg="green", fg="yellow", font=("Courier", 12)
         )
         refresh_button.pack(pady=10)
-    
+
+        print("[LOG] Showing buttons")
+        refresh_button = tk.Button(
+            cmd_window, text="Refresh Weather (F5)", 
+            command=WeatherFunctions.refresh_weather,
+            bg="green", fg="yellow", font=("Courier", 12)
+        )
+        refresh_button.pack(pady=10)
+
+        fullscreen_button = tk.Button(
+            cmd_window, text="Toggle Fullscreen (F11)", 
+            command=ScreenState.toggle_fullscreen,
+            bg="blue", fg="white", font=("Courier", 12)
+        )
+        fullscreen_button.pack(pady=5)
+
+        browser_button = tk.Button(
+            cmd_window, text="Open webserver page (F4)", 
+            command=lambda: browser_helper.WebOpen.opener(port),
+            bg="blue", fg="white", font=("Courier", 12)
+        )
+        browser_button.pack(pady=5)
+
+        # widget_button = tk.Button(
+        #     cmd_window, text="Open widget mode (F8)", 
+        #     command=open_widget,
+        #     bg="blue", fg="white", font=("Courier", 12)
+        # )
+        # widget_button.pack(pady=5)
+
+        # forecast_button = tk.Button(cmd_window, text="5 Day Forecast", command=process_weather_entries,
+        #                     bg="blue", fg="white", font=("Courier", 12))
+        # forecast_button.pack(pady=5)
+        show_buttons = True
+
+        radar_button = tk.Button(
+            cmd_window, text="Open radar (F2)", 
+            command=radar_helper.open_radar,
+            bg="blue", fg="white", font=("Courier", 12)
+        )
+        radar_button.pack(pady=5)
+
         # Exit button
         exit_btn = tk.Button(cmd_window, text="Exit", command=root.quit)
         exit_btn.pack(pady=5)
@@ -698,8 +696,16 @@ class CommandWindow:
         # widget_button.pack(pady=5)
     
         return cmd_window
+    
 
-app = Flask(__name__)
+if getattr(sys, 'frozen', False):  # running as exe
+    template_folder = os.path.join(sys._MEIPASS, "templates")
+    static_folder = os.path.join(sys._MEIPASS, "static")
+else:  # running as script
+    template_folder = "templates"
+    static_folder = "static"
+
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 
 socketio = SocketIO(app, async_mode="threading")
 
