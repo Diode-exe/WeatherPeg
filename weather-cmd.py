@@ -39,7 +39,7 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 3.1"
+current_version = "WeatherPeg Version 3.1.1"
 designed_by = "Designed by Diode-exe"
 
 class ScrollingSummary:
@@ -610,7 +610,7 @@ class CommandWindow:
         
         cmd_window = tk.Toplevel(root)
         cmd_window.title("WeatherPeg Commands")
-        cmd_window.geometry("300x200")
+        cmd_window.geometry("")
     
         # Help button
         help_btn = tk.Button(
@@ -618,24 +618,6 @@ class CommandWindow:
             command=CommandWindow.show_help
         )
         help_btn.pack(pady=5)
-
-        # Fullscreen toggle button
-        fullscreen_button = tk.Button(
-            cmd_window, 
-            text="Toggle Fullscreen (F11)", 
-            command=ScreenState.toggle_fullscreen,
-            bg="blue", fg="white", font=("Courier", 12)
-        )
-        fullscreen_button.pack(pady=5)
-
-        # Refresh weather button
-        refresh_button = tk.Button(
-            cmd_window, 
-            text="Refresh Weather (F5)", 
-            command=lambda: browser_helper.WebOpen.opener(port),
-            bg="green", fg="yellow", font=("Courier", 12)
-        )
-        refresh_button.pack(pady=10)
 
         print("[LOG] Showing buttons")
         refresh_button = tk.Button(
@@ -682,12 +664,6 @@ class CommandWindow:
         exit_btn = tk.Button(cmd_window, text="Exit", command=root.quit)
         exit_btn.pack(pady=5)
         
-        browser_button = tk.Button(
-            cmd_window, text="Open webserver page (F4)", 
-            command=lambda: browser_helper.WebOpen.opener(port),
-            bg="blue", fg="white", font=("Courier", 12)
-        )
-        browser_button.pack(pady=5)
         # widget_button = tk.Button(
         #     cmd_window, text="Open widget mode (F8)", 
         #     command=open_widget,
