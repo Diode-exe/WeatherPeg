@@ -56,20 +56,20 @@ class ScrollingSummary:
                             padx=10, pady=10)
         self.label.pack()
         self.update_text(text)
-    
+
     def update_text(self, new_text):
         # Stop any existing scrolling by incrementing scroll_id
         self.scroll_id += 1
         self.is_scrolling = False
-        
+
         # Cancel any pending after callbacks
         if self.after_id:
             self.label.after_cancel(self.after_id)
             self.after_id = None
-        
+
         self.original_text = new_text
         self.position = 0
-        
+
         # Only scroll if text is longer than display width
         if len(new_text) <= self.width:
             self.label.config(text=new_text)
@@ -77,12 +77,12 @@ class ScrollingSummary:
             self.is_scrolling = True
             current_scroll_id = self.scroll_id
             self.scroll(current_scroll_id)
-    
+
     def scroll(self, scroll_id):
         # Check if this scroll session is still valid
         if scroll_id != self.scroll_id or not self.is_scrolling or not self.original_text:
             return
-        
+
         # Create extended text with spacing for smooth looping
         extended_text = self.original_text + "   ***   "
         # Calculate visible portion
@@ -93,7 +93,7 @@ class ScrollingSummary:
         self.position += 1
         # Schedule next update with the same scroll_id
         self.after_id = self.label.after(self.speed, lambda: self.scroll(scroll_id))
-    
+
     def flash_black(self):
         """Flash the label white for refresh indication"""
         self.label.config(fg="black")
@@ -150,18 +150,6 @@ class ScreenState():
         global root
         root.attributes("-fullscreen", False)
         # show_elements()
-
-    # def hide_elements():
-    #     refresh_button.pack_forget()
-    #     fullscreen_button.pack_forget()
-    #     instructions.pack_forget()
-    #     root.config(cursor="none")
-
-    # def show_elements():
-    #     fullscreen_button.pack(pady=5)
-    #     refresh_button.pack(pady=10)
-    #     instructions.pack(pady=5)
-    #     root.config(cursor="")
 
 def logger():
     if Config.get_config_bool("write_log"):
@@ -238,9 +226,9 @@ class Config():
         except FileNotFoundError:
             print(f"[LOG] File {configfilename} not found")
             return None
-        
+
         return None  # Default if "port:" not found
-    
+
     def get_config_value(key, default=None):
         configfilename = "txt/config.txt"
         try:
@@ -314,7 +302,7 @@ def weathermodechoice():
                         if Config.get_config_bool("show_scroller"):
                             scrolling_summary.update_text(current_summary)
                         break
-            
+
             if tts_helper.get_config_bool_tts("do_tts"):
                 tts_helper.speaker(current_title)
                 tts_helper.speaker(current_summary)
@@ -330,14 +318,14 @@ def weathermodechoice():
         def cycle_weather_entries():
             def background_cycle():
                 index = 0
-                
+
                 while True:
                     try:
                         # Fetch fresh data each cycle
                         response = requests.get(source_helper.RSS_URL)
                         feed = feedparser.parse(response.content)
                         weather_entries = [entry for entry in feed.entries if entry.category == "Weather Forecasts"]
-                        
+
                         if weather_entries:
                             global warning_summary
                             entry = weather_entries[index]
@@ -347,13 +335,13 @@ def weathermodechoice():
                             current_summary = re.sub(r'<[^>]+>', '', current_summary)
 
                             warning_summary = current_summary
-                            
+
                             print("Current Conditions Updated:")
                             print("Entry title:", current_title)
                             print("Entry summary:", current_summary)
                             print("Entry link:", current_link)
                             print("-" * 50)
-                            
+
                             # Update GUI on main thread
                             def update_gui():
                                 # Update your StringVars
@@ -363,24 +351,24 @@ def weathermodechoice():
                                 warning_title_var.set(current_title)
                                 if Config.get_config_bool("show_scroller"):
                                     scrolling_summary.update_text(current_summary)
-                                
+
                                 update_display()
                             update_gui()
 
                             if tts_helper.get_config_bool_tts("do_tts"):
                                 tts_helper.speaker(current_title)
                                 tts_helper.speaker(current_summary)
-                            
+
                             index = (index + 1) % len(weather_entries)
-                            
+
                             # Schedule GUI update on main thread
                             if 'root' in globals() and root:
                                 root.after(0, update_gui)
                     except Exception as e:
                         print(f"Error in weather cycle: {e}")
-                    
+
                     time.sleep(30)
-            
+
             thread = threading.Thread(target=background_cycle)
             thread.daemon = True
             thread.start()
@@ -394,7 +382,7 @@ def display():
     global root, title_var, summary_var, link_var, scrolling_summary, timestamp_var, warning_var
     global current_warning, current_fact_var, warning_title_var
     global display_flash
-    global refresh_button, fullscreen_button, instructions, browser_button
+    global refresh_button, fullscreen_button, browser_button
 
     if Config.get_config_bool("show_display"):
 
@@ -432,7 +420,7 @@ def display():
         if Config.get_config_bool("show_link"):
             print("[LOG] Showing link")
             link_label = tk.Label(
-                root, textvariable=link_var, 
+                root, textvariable=link_var,
                 fg="cyan", bg="black",
                 font=("Courier", 10), justify="left",
                 padx=10, pady=10
@@ -442,24 +430,24 @@ def display():
             print("[LOG] Not showing link")
 
         version_label = tk.Label(
-            root, text=current_version, 
+            root, text=current_version,
             fg="cyan", bg="black",
             font=("Courier", 10), justify="left"
         )
         version_label.pack(side=tk.BOTTOM, pady=10, padx=10)
-        
+
         designed_by_label = tk.Label(
-            root, text=designed_by, 
+            root, text=designed_by,
             fg="cyan", bg="black",
             font=("Courier", 10), justify="left"
         )
         designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
 
         if Config.get_config_bool("show_warning"):
-            print("[LOG] Showing warning label")
+            print("[LOG] Showing warning labels")
             show_warnings = True
             current_warning_title = tk.Label(
-                root, textvariable=warning_title_var, 
+                root, textvariable=warning_title_var,
                 fg="lime", bg="black",
                 font=("Courier", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
@@ -467,7 +455,7 @@ def display():
             current_warning_title.pack()
 
             current_warning = tk.Label(
-                root, textvariable=warning_var, 
+                root, textvariable=warning_var,
                 fg="lime", bg="black",
                 font=("Courier", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
@@ -484,20 +472,6 @@ def display():
         # fact_label.pack()
         print("[LOG] Not showing buttons")
         show_buttons = False
-
-        if Config.get_config_bool("show_instruction"):
-            print("[LOG] Showing instruction")
-            show_instructions = True
-            # Add instructions
-            instructions = tk.Label(
-                root, text="Press F11 to toggle fullscreen • Press Escape to exit fullscreen",
-                fg="gray", bg="black",
-                font=("Courier", 10)
-            )
-            instructions.pack(pady=5)
-        else:
-            print("[LOG] Not showing instruction")
-            show_instructions = False
 
         # Add timestamp
         timestamp_var = tk.StringVar()
@@ -525,8 +499,6 @@ def display():
             link_label.config(fg="black")
             if Config.get_config_bool("show_scroller"):
                 scrolling_summary.flash_black()  # Flash the scrolling summary
-            if show_instructions:
-                instructions.config(fg="black")
             timestamp_label.config(fg="black")
             if show_buttons:
                 refresh_button.config(bg="black", fg="black", bd=0, highlightthickness=0)
@@ -546,8 +518,6 @@ def display():
         def restore_colors():
             title_label.config(fg="lime")
             link_label.config(fg="cyan")
-            if show_instructions:
-                instructions.config(fg="gray")
             timestamp_label.config(fg="yellow")
             if show_buttons:
                 refresh_button.config(bg="green", fg="yellow", bd=1, highlightthickness=1)
@@ -592,11 +562,11 @@ class CommandWindow:
                 help_text = helpfile.read()
         except FileNotFoundError:
             help_text = "Help file not found!"
-        
+
         help_window = tk.Toplevel(root)
         help_window.title("Help")
         help_window.geometry("400x300")
-        
+
         text_widget = tk.Text(help_window, wrap=tk.WORD)
         text_widget.insert(1.0, help_text)
         text_widget.pack(fill=tk.BOTH, expand=True)
@@ -607,42 +577,42 @@ class CommandWindow:
         if not root or not root.winfo_exists():
             print("Main window has been destroyed!")
             return None
-        
+
         cmd_window = tk.Toplevel(root)
         cmd_window.title("WeatherPeg Commands")
         cmd_window.geometry("")
-    
+
         # Help button
         help_btn = tk.Button(
-            cmd_window, text="Help", 
+            cmd_window, text="Help",
             command=CommandWindow.show_help
         )
         help_btn.pack(pady=5)
 
         print("[LOG] Showing buttons")
         refresh_button = tk.Button(
-            cmd_window, text="Refresh Weather (F5)", 
+            cmd_window, text="Refresh Weather (F5)",
             command=WeatherFunctions.refresh_weather,
             bg="green", fg="yellow", font=("Courier", 12)
         )
         refresh_button.pack(pady=10)
 
         fullscreen_button = tk.Button(
-            cmd_window, text="Toggle Fullscreen (F11)", 
+            cmd_window, text="Toggle Fullscreen (F11)",
             command=ScreenState.toggle_fullscreen,
             bg="blue", fg="white", font=("Courier", 12)
         )
         fullscreen_button.pack(pady=5)
 
         browser_button = tk.Button(
-            cmd_window, text="Open webserver page (F4)", 
+            cmd_window, text="Open webserver page (F4)",
             command=lambda: browser_helper.WebOpen.opener(port),
             bg="blue", fg="white", font=("Courier", 12)
         )
         browser_button.pack(pady=5)
 
         # widget_button = tk.Button(
-        #     cmd_window, text="Open widget mode (F8)", 
+        #     cmd_window, text="Open widget mode (F8)",
         #     command=open_widget,
         #     bg="blue", fg="white", font=("Courier", 12)
         # )
@@ -654,7 +624,7 @@ class CommandWindow:
         show_buttons = True
 
         radar_button = tk.Button(
-            cmd_window, text="Open radar (F2)", 
+            cmd_window, text="Open radar (F2)",
             command=radar_helper.open_radar,
             bg="blue", fg="white", font=("Courier", 12)
         )
@@ -663,16 +633,16 @@ class CommandWindow:
         # Exit button
         exit_btn = tk.Button(cmd_window, text="Exit", command=root.quit)
         exit_btn.pack(pady=5)
-        
+
         # widget_button = tk.Button(
-        #     cmd_window, text="Open widget mode (F8)", 
+        #     cmd_window, text="Open widget mode (F8)",
         #     command=open_widget,
         #     bg="blue", fg="white", font=("Courier", 12)
         # )
         # widget_button.pack(pady=5)
-    
+
         return cmd_window
-    
+
 
 if getattr(sys, 'frozen', False):  # running as exe
     template_folder = os.path.join(sys._MEIPASS, "templates")
@@ -699,7 +669,7 @@ def webweather():
         warning_summary=warning_summary,
         last_updated=timestamp_var.get()
     )
-    
+
 @app.route("/shutdown", methods=["GET", "POST"])
 def shutdown():
     if request.remote_addr != "127.0.0.1":
@@ -789,7 +759,7 @@ if __name__ == "__main__":
     if Config.get_config_bool("show_display"):
         print("Starting GUI...")
         display()
-    else: 
+    else:
         print("[LOG] Not showing display")
         while True:
             time.sleep(1)
