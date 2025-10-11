@@ -2125,3 +2125,15 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: No watches or warnings in effect.
 Logged time: Current time is 2025-10-06 13:31:47
 --------------------------------------------------
+Current Conditions: Clear, 8.9°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Friday 10 October 2025 Condition: Clear Temperature: 8.9°C Pressure / Tendency: 102.2 kPa falling Visibility: 24 km Humidity: 66 % Dewpoint: 2.8°C Wind: SSW 10 km/h Air Quality Health Index: 3
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-10 21:25:25
+--------------------------------------------------
+Current Conditions: Clear, 8.9°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 PM CDT Friday 10 October 2025 Condition: Clear Temperature: 8.9°C Pressure / Tendency: 102.2 kPa falling Visibility: 24 km Humidity: 66 % Dewpoint: 2.8°C Wind: SSW 10 km/h Air Quality Health Index: 3
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-10 21:38:13
+--------------------------------------------------
