@@ -39,8 +39,9 @@ link_var = None
 
 global weathermodechoice
 
-current_version = "WeatherPeg Version 3.1.1"
+current_version = "3.2"
 designed_by = "Designed by Diode-exe"
+prog = "WeatherPeg"
 
 class ScrollingSummary:
     def __init__(self, parent, text="", width=80, speed=150):
@@ -52,7 +53,7 @@ class ScrollingSummary:
         self.after_id = None  # Track the scheduled callback
         self.scroll_id = 0  # Unique ID for each scroll session
         self.label = tk.Label(parent, text="", fg="lime", bg="black",
-                            font=("Courier", 12), justify="left",
+                            font=("VCR OSD Mono", 12), justify="left",
                             padx=10, pady=10)
         self.label.pack()
         self.update_text(text)
@@ -387,7 +388,7 @@ def display():
     if Config.get_config_bool("show_display"):
 
         root = tk.Tk()
-        root.title("WeatherPeg")
+        root.title(prog)
         root.configure(bg="black")
         root.geometry("800x600")
 
@@ -409,7 +410,7 @@ def display():
 
         # Create and pack labels
         title_label = tk.Label(root, textvariable=title_var, fg="lime", bg="black",
-                            font=("Courier", 16, "bold"), justify="left",
+                            font=("VCR OSD Mono", 16, "bold"), justify="left",
                             padx=10, pady=10, wraplength=750)
         title_label.pack()
 
@@ -422,7 +423,7 @@ def display():
             link_label = tk.Label(
                 root, textvariable=link_var,
                 fg="cyan", bg="black",
-                font=("Courier", 10), justify="left",
+                font=("VCR OSD Mono", 10), justify="left",
                 padx=10, pady=10
             )
             link_label.pack()
@@ -449,7 +450,7 @@ def display():
             current_warning_title = tk.Label(
                 root, textvariable=warning_title_var,
                 fg="lime", bg="black",
-                font=("Courier", 16, "bold"), justify="left",
+                font=("VCR OSD Mono", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
             )
             current_warning_title.pack()
@@ -457,7 +458,7 @@ def display():
             current_warning = tk.Label(
                 root, textvariable=warning_var,
                 fg="lime", bg="black",
-                font=("Courier", 16, "bold"), justify="left",
+                font=("VCR OSD Mono", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
             )
             current_warning.pack()
@@ -466,7 +467,7 @@ def display():
             show_warnings = False
 
         # fact_label = tk.Label(root, textvariable=current_fact_var, fg="lime", bg="black",
-        #                 font=("Courier", 16, "bold"), justify="left",
+        #                 font=("VCR OSD Mono", 16, "bold"), justify="left",
         #                 padx=10, pady=10, wraplength=750)
 
         # fact_label.pack()
@@ -579,7 +580,7 @@ class CommandWindow:
             return None
 
         cmd_window = tk.Toplevel(root)
-        cmd_window.title("WeatherPeg Commands")
+        cmd_window.title(f"{prog} Commands")
         cmd_window.geometry("")
 
         # Help button
@@ -593,40 +594,40 @@ class CommandWindow:
         refresh_button = tk.Button(
             cmd_window, text="Refresh Weather (F5)",
             command=WeatherFunctions.refresh_weather,
-            bg="green", fg="yellow", font=("Courier", 12)
+            bg="green", fg="yellow", font=("VCR OSD Mono", 12)
         )
         refresh_button.pack(pady=10)
 
         fullscreen_button = tk.Button(
             cmd_window, text="Toggle Fullscreen (F11)",
             command=ScreenState.toggle_fullscreen,
-            bg="blue", fg="white", font=("Courier", 12)
+            bg="blue", fg="white", font=("VCR OSD Mono", 12)
         )
         fullscreen_button.pack(pady=5)
 
         browser_button = tk.Button(
             cmd_window, text="Open webserver page (F4)",
             command=lambda: browser_helper.WebOpen.opener(port),
-            bg="blue", fg="white", font=("Courier", 12)
+            bg="blue", fg="white", font=("VCR OSD Mono", 12)
         )
         browser_button.pack(pady=5)
 
         # widget_button = tk.Button(
         #     cmd_window, text="Open widget mode (F8)",
         #     command=open_widget,
-        #     bg="blue", fg="white", font=("Courier", 12)
+        #     bg="blue", fg="white", font=("VCR OSD Mono", 12)
         # )
         # widget_button.pack(pady=5)
 
         # forecast_button = tk.Button(cmd_window, text="5 Day Forecast", command=process_weather_entries,
-        #                     bg="blue", fg="white", font=("Courier", 12))
+        #                     bg="blue", fg="white", font=("VCR OSD Mono", 12))
         # forecast_button.pack(pady=5)
         show_buttons = True
 
         radar_button = tk.Button(
             cmd_window, text="Open radar (F2)",
             command=radar_helper.open_radar,
-            bg="blue", fg="white", font=("Courier", 12)
+            bg="blue", fg="white", font=("VCR OSD Mono", 12)
         )
         radar_button.pack(pady=5)
 
@@ -637,7 +638,7 @@ class CommandWindow:
         # widget_button = tk.Button(
         #     cmd_window, text="Open widget mode (F8)",
         #     command=open_widget,
-        #     bg="blue", fg="white", font=("Courier", 12)
+        #     bg="blue", fg="white", font=("VCR OSD Mono", 12)
         # )
         # widget_button.pack(pady=5)
 
@@ -753,7 +754,7 @@ def warning_notif(event=None):
     toast("Weather Warning!", "WeatherPeg has detected a potential weather warning or watch!")
 
 if __name__ == "__main__":
-    print(f"Welcome to WeatherPeg, version {current_version}")
+    print(f"Welcome to {prog}, version {current_version}")
     print("Fetching initial weather data for webserver...")
     fetch_initial_weather_globals()
     if Config.get_config_bool("show_display"):
