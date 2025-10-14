@@ -7,7 +7,7 @@ import html
 import tkinter as tk
 import datetime
 import os, sys
-if os.name("nt"):
+if os.name == "nt":
     import tts_helper
     from win11toast import toast
 else:
@@ -37,7 +37,7 @@ title_var = None
 summary_var = None
 link_var = None
 
-current_version = "3.3"
+current_version = "WeatherPeg Version 3.3"
 designed_by = "Designed by Diode-exe"
 prog = "WeatherPeg"
 
@@ -276,7 +276,7 @@ class Config():
 port = Config.get_config_port()
 
 def main_speaker(text):
-    if os.name("nt"):
+    if os.name == "nt":
         tts_enabled = Config.get_config_bool_tts("do_tts")
         print(f"[LOG] TTS enabled: {tts_enabled}")
         if tts_enabled:
@@ -328,7 +328,7 @@ def weathermodechoice():
                         if Config.get_config_bool("show_scroller"):
                             scrolling_summary.update_text(current_summary)
                         break
-            if os.name("nt"):
+            if os.name == "nt":
                 if tts_helper.get_config_bool_tts("do_tts"):
                     tts_helper.speaker(current_title)
                     tts_helper.speaker(current_summary)
@@ -371,7 +371,7 @@ def weathermodechoice():
                             print("-" * 50)
 
                             update_display()
-                            if os.name("nt"):
+                            if os.name == "nt":
                                 if tts_helper.get_config_bool_tts("do_tts"):
                                     tts_helper.speaker(current_title)
                                     tts_helper.speaker(current_summary)
@@ -772,10 +772,10 @@ def threading_warning_notif(event=None):
     threading.Thread(target=warning_notif, daemon=True).start()
 
 def warning_notif(event=None):
-    if os.name("nt"):
+    if os.name == "nt":
         toast("Weather Warning!", "WeatherPeg has detected a potential weather warning or watch!")
     else:
-        print("[LOG] Not doing toast, not on NT")
+        print("[LOG] Not doing toast, not on")
 
 if __name__ == "__main__":
     print(f"Welcome to {prog}, version {current_version}")
