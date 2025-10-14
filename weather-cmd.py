@@ -37,7 +37,7 @@ title_var = None
 summary_var = None
 link_var = None
 
-current_version = "WeatherPeg Version 3.3"
+current_version = "WeatherPeg Version 3.3.1"
 designed_by = "Designed by Diode-exe"
 prog = "WeatherPeg"
 
@@ -285,7 +285,12 @@ def main_speaker(text):
         else:
             print("[LOG] TTS is disabled in config")
     else:
-        print("[LOG] Not doing TTS, not on NT")
+        if check_espeak():
+            thread = threading.Thread(target=linux_tts, args=(text,))
+            thread.daemon = True
+            thread.start()
+        else:
+            print(f"[LOG] TTS not available - espeak not found. Install with: sudo apt install espeak")
 
 def weathermodechoice():
     if Config.get_config_bool("mode"):
@@ -335,7 +340,14 @@ def weathermodechoice():
                     tts_helper.speaker(warning_title)
                     tts_helper.speaker(warning_summary)
             else:
-                print("[LOG] Not doing TTS, not on NT")
+                if check_espeak():
+                    if tts_helper.get_config_bool_tts("do_tts"):
+                        tts_helper.linux_tts(current_title)
+                        tts_helper.linux_tts(current_summary)
+                        tts_helper.linux_tts(warning_title)
+                        tts_helper.linux_tts(warning_summary)
+                else:
+                    print(f"[LOG] TTS not available - espeak not found. Install with: sudo apt install espeak")
 
             dlhistory()
 
@@ -370,13 +382,16 @@ def weathermodechoice():
                             print("Entry link:", current_link)
                             print("-" * 50)
 
-                            update_display()
                             if os.name == "nt":
                                 if tts_helper.get_config_bool_tts("do_tts"):
                                     tts_helper.speaker(current_title)
                                     tts_helper.speaker(current_summary)
                             else:
-                                print("[LOG] Not doing TTS, not on NT")
+                                if check_espeak():
+                                    tts_helper.linux_tts(current_title)
+                                    tts_helper.linux_tts(current_summary)
+                                else:
+                                    print(f"[LOG] TTS not available - espeak not found. Install with: sudo apt install espeak")
 
                             index = (index + 1) % len(weather_entries)
 

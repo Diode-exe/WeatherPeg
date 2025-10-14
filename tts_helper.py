@@ -1,6 +1,9 @@
 import win32com.client
 import threading
 import pythoncom
+import shutil
+import os
+import subprocess
 
 speech_lock = threading.Lock()
 
@@ -37,3 +40,12 @@ def get_config_bool_tts(key):
         print(f"[LOG] File {configfilename} not found")
         return False
     return False  # Default to False if not found
+
+def check_espeak():
+    return shutil.which('espeak') is not None
+
+if os.name != "nt" and not check_espeak():
+    print("[WARNING] espeak not found. Install with: sudo apt install espeak")
+
+def linux_tts(text):
+    subprocess.run(['espeak', text], check=False)
