@@ -1,11 +1,17 @@
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import feedparser
 import re
 import html
 import tkinter as tk
 import datetime
 import os, sys
-import tts_helper
+if os.name("nt"):
+    import tts_helper
+    from win11toast import toast
+else:
+    print("[LOG] Not importing tts, toast, not on NT")
 import source_helper
 import time
 import threading
@@ -13,13 +19,7 @@ from flask import Flask, url_for, request, render_template
 import browser_helper
 from flask_socketio import SocketIO
 import signal
-from win11toast import toast
 import radar_helper
-
-# RSS_URL = "https://weather.gc.ca/rss/city/mb-38_e.xml"
-# RSS_URL2 = "https://weather.gc.ca/rss/weather/49.591_-96.89_e.xml"
-# Leaving this in just for reference in case I lose the URLs
-# Don't use these, it's all handled in source_helper.py
 
 # https://github.com/Diode-exe/WeatherPeg
 
@@ -37,11 +37,32 @@ title_var = None
 summary_var = None
 link_var = None
 
-global weathermodechoice
-
-current_version = "3.2"
+current_version = "3.3"
 designed_by = "Designed by Diode-exe"
 prog = "WeatherPeg"
+
+# Create a single shared HTTP session with retries/timeouts
+def _create_http_session():
+    session = requests.Session()
+    retry = Retry(
+        total=3,
+        connect=3,
+        read=3,
+        backoff_factor=0.5,
+        status_forcelist=(429, 500, 502, 503, 504),
+        allowed_methods=("GET", "POST"),
+        raise_on_status=False,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
+
+_HTTP_SESSION = _create_http_session()
+
+def http_get(url, **kwargs):
+    timeout = kwargs.pop("timeout", 10)
+    return _HTTP_SESSION.get(url, timeout=timeout, **kwargs)
 
 class ScrollingSummary:
     def __init__(self, parent, text="", width=80, speed=150):
@@ -156,6 +177,8 @@ def logger():
     if Config.get_config_bool("write_log"):
         filename = "txt/history.txt"
         logged_time = timestamp_var.get()
+        # Ensure directory exists
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
         if os.path.exists(filename):
             print(f"[LOG] Found {filename}")
         else:
@@ -250,24 +273,26 @@ class Config():
             return default
         return default
 
-
 port = Config.get_config_port()
 
 def main_speaker(text):
-    tts_enabled = tts_helper.get_config_bool_tts("do_tts")
-    print(f"[LOG] TTS enabled: {tts_enabled}")  # Debug line
-    if tts_enabled:
-        print(f"[LOG] About to speak: {text}")  # Debug line
-        tts_helper.speaker(text)
+    if os.name("nt"):
+        tts_enabled = Config.get_config_bool_tts("do_tts")
+        print(f"[LOG] TTS enabled: {tts_enabled}")
+        if tts_enabled:
+            print(f"[LOG] About to speak: {text}")
+            tts_helper.speaker(text)
+        else:
+            print("[LOG] TTS is disabled in config")
     else:
-        print("[LOG] TTS is disabled in config")
+        print("[LOG] Not doing TTS, not on NT")
 
 def weathermodechoice():
     if Config.get_config_bool("mode"):
         def get_weather():
             # mode 1
             # Fetch fresh data
-            response = requests.get(source_helper.RSS_URL)
+            response = http_get(source_helper.RSS_URL)
             feed = feedparser.parse(response.content)
 
             for entry in feed.entries:
@@ -303,12 +328,14 @@ def weathermodechoice():
                         if Config.get_config_bool("show_scroller"):
                             scrolling_summary.update_text(current_summary)
                         break
-
-            if tts_helper.get_config_bool_tts("do_tts"):
-                tts_helper.speaker(current_title)
-                tts_helper.speaker(current_summary)
-                tts_helper.speaker(warning_title)
-                tts_helper.speaker(warning_summary)
+            if os.name("nt"):
+                if tts_helper.get_config_bool_tts("do_tts"):
+                    tts_helper.speaker(current_title)
+                    tts_helper.speaker(current_summary)
+                    tts_helper.speaker(warning_title)
+                    tts_helper.speaker(warning_summary)
+            else:
+                print("[LOG] Not doing TTS, not on NT")
 
             dlhistory()
 
@@ -323,7 +350,7 @@ def weathermodechoice():
                 while True:
                     try:
                         # Fetch fresh data each cycle
-                        response = requests.get(source_helper.RSS_URL)
+                        response = http_get(source_helper.RSS_URL)
                         feed = feedparser.parse(response.content)
                         weather_entries = [entry for entry in feed.entries if entry.category == "Weather Forecasts"]
 
@@ -343,28 +370,19 @@ def weathermodechoice():
                             print("Entry link:", current_link)
                             print("-" * 50)
 
-                            # Update GUI on main thread
-                            def update_gui():
-                                # Update your StringVars
-                                title_var.set(current_title)
-                                link_var.set(current_link)
-                                warning_var.set(current_summary)
-                                warning_title_var.set(current_title)
-                                if Config.get_config_bool("show_scroller"):
-                                    scrolling_summary.update_text(current_summary)
-
-                                update_display()
-                            update_gui()
-
-                            if tts_helper.get_config_bool_tts("do_tts"):
-                                tts_helper.speaker(current_title)
-                                tts_helper.speaker(current_summary)
+                            update_display()
+                            if os.name("nt"):
+                                if tts_helper.get_config_bool_tts("do_tts"):
+                                    tts_helper.speaker(current_title)
+                                    tts_helper.speaker(current_summary)
+                            else:
+                                print("[LOG] Not doing TTS, not on NT")
 
                             index = (index + 1) % len(weather_entries)
 
                             # Schedule GUI update on main thread
                             if 'root' in globals() and root:
-                                root.after(0, update_gui)
+                                root.after(0, update_display)
                     except Exception as e:
                         print(f"Error in weather cycle: {e}")
 
@@ -660,6 +678,10 @@ socketio = SocketIO(app, async_mode="threading")
 def webweather():
     print("[DEBUG] Flask route accessed!")
     css_url = url_for('static', filename='styles.css')
+    try:
+        last_updated_value = timestamp_var.get()
+    except Exception:
+        last_updated_value = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     return render_template(
         "weather.html",
@@ -668,7 +690,7 @@ def webweather():
         current_summary=current_summary,
         warning_title=warning_title,
         warning_summary=warning_summary,
-        last_updated=timestamp_var.get()
+        last_updated=last_updated_value
     )
 
 @app.route("/shutdown", methods=["GET", "POST"])
@@ -695,7 +717,7 @@ start_webserver()
 def fetch_initial_weather_globals():
     global current_title, current_summary, current_link, warning_title, warning_summary
     try:
-        response = requests.get(source_helper.RSS_URL)
+        response = http_get(source_helper.RSS_URL)
         feed = feedparser.parse(response.content)
         for entry in feed.entries:
             if entry.category == "Warnings and Watches":
@@ -719,19 +741,18 @@ def dlhistory():
     filename = "history/weatherpegsource.xml"
 
     # If file exists, append a number
-    try:
-        base, ext = os.path.splitext(filename)
-        counter = 1
-        new_filename = filename
+    base, ext = os.path.splitext(filename)
+    counter = 1
+    new_filename = filename
 
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
 
-        while os.path.exists(new_filename):
-            new_filename = f"{base}_{counter}{ext}"
-            counter += 1
-    except FileNotFoundError:
-        print(f"[LOG] {filename} not found, so creating")
+    while os.path.exists(new_filename):
+        new_filename = f"{base}_{counter}{ext}"
+        counter += 1
 
-    response = requests.get(url, stream=True)
+    response = http_get(url, stream=True)
     with open(new_filename, "wb") as f:
         for chunk in response.iter_content(chunk_size=8192):
             f.write(chunk)
@@ -751,7 +772,10 @@ def threading_warning_notif(event=None):
     threading.Thread(target=warning_notif, daemon=True).start()
 
 def warning_notif(event=None):
-    toast("Weather Warning!", "WeatherPeg has detected a potential weather warning or watch!")
+    if os.name("nt"):
+        toast("Weather Warning!", "WeatherPeg has detected a potential weather warning or watch!")
+    else:
+        print("[LOG] Not doing toast, not on NT")
 
 if __name__ == "__main__":
     print(f"Welcome to {prog}, version {current_version}")
