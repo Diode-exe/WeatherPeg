@@ -21,6 +21,7 @@ from flask_socketio import SocketIO
 import signal
 import radar_helper
 import logging
+from scrolling_text_widget import ScrollingTextWidget
 
 # https://github.com/Diode-exe/WeatherPeg
 
@@ -38,7 +39,7 @@ title_var = None
 summary_var = None
 link_var = None
 
-current_version = "WeatherPeg Version 3.3.1"
+current_version = "WeatherPeg Version 3.3.3"
 designed_by = "Designed by Diode-exe"
 prog = "WeatherPeg"
 
@@ -65,63 +66,8 @@ def http_get(url, **kwargs):
     timeout = kwargs.pop("timeout", 10)
     return _HTTP_SESSION.get(url, timeout=timeout, **kwargs)
 
-class ScrollingSummary:
-    # garbage implementation, i hate this
-    def __init__(self, parent, text="", width=80, speed=150):
-        self.original_text = text
-        self.width = width
-        self.speed = speed
-        self.position = 0
-        self.is_scrolling = False
-        self.after_id = None  # Track the scheduled callback
-        self.scroll_id = 0  # Unique ID for each scroll session
-        self.label = tk.Label(parent, text="", fg="lime", bg="black",
-                            font=("VCR OSD Mono", 12), justify="left",
-                            padx=10, pady=10)
-        self.label.pack()
-        self.update_text(text)
-
-    def update_text(self, new_text):
-        # Stop any existing scrolling by incrementing scroll_id
-        self.scroll_id += 1
-        self.is_scrolling = False
-
-        # Cancel any pending after callbacks
-        if self.after_id:
-            self.label.after_cancel(self.after_id)
-            self.after_id = None
-
-        self.original_text = new_text
-        self.position = 0
-
-        # Only scroll if text is longer than display width
-        if len(new_text) <= self.width:
-            self.label.config(text=new_text)
-        else:
-            self.is_scrolling = True
-            current_scroll_id = self.scroll_id
-            self.scroll(current_scroll_id)
-
-    def scroll(self, scroll_id):
-        # Check if this scroll session is still valid
-        if scroll_id != self.scroll_id or not self.is_scrolling or not self.original_text:
-            return
-
-        # Create extended text with spacing for smooth looping
-        extended_text = self.original_text + "   ***   "
-        # Calculate visible portion
-        start = self.position % len(extended_text)
-        display_text = (extended_text[start:] + extended_text)[:self.width]
-        self.label.config(text=display_text)
-        # Move position for next update
-        self.position += 1
-        # Schedule next update with the same scroll_id
-        self.after_id = self.label.after(self.speed, lambda: self.scroll(scroll_id))
-
-    def flash_black(self):
-        """Flash the label white for refresh indication"""
-        self.label.config(fg="black")
-        self.label.after(750, lambda: self.label.config(fg="lime"))
+# Use the improved ScrollingTextWidget as ScrollingSummary for backward compatibility
+ScrollingSummary = ScrollingTextWidget
 
 def update_display():
     """Update the GUI with current weather data"""
