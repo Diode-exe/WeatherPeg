@@ -2137,3 +2137,93 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: No watches or warnings in effect.
 Logged time: Current time is 2025-10-10 21:38:13
 --------------------------------------------------
+Current Conditions: Light Rain, 9.8°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:43 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.8°C Pressure / Tendency: 101.4 kPa falling Visibility: 5 km Humidity: 87 % Dewpoint: 7.7°C Wind: SE 15 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 09:47:49
+--------------------------------------------------
+Current Conditions: Light Rain, 9.8°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:43 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.8°C Pressure / Tendency: 101.4 kPa falling Visibility: 5 km Humidity: 87 % Dewpoint: 7.7°C Wind: SE 15 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 09:49:50
+--------------------------------------------------
+Current Conditions: Light Rain, 9.8°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:43 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.8°C Pressure / Tendency: 101.4 kPa falling Visibility: 5 km Humidity: 87 % Dewpoint: 7.7°C Wind: SE 15 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 09:51:50
+--------------------------------------------------
+Current Conditions: Light Rain, 9.6°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:50 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.6°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 90 % Dewpoint: 8.0°C Wind: ESE 13 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 09:53:51
+--------------------------------------------------
+Current Conditions: Light Rain, 9.6°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:50 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.6°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 90 % Dewpoint: 8.0°C Wind: ESE 13 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 09:55:51
+--------------------------------------------------
+Current Conditions: Light Rain, 9.6°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:50 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.6°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 90 % Dewpoint: 8.0°C Wind: ESE 13 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 09:57:51
+--------------------------------------------------
+Current Conditions: Light Rain, 9.6°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:50 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.6°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 90 % Dewpoint: 8.0°C Wind: ESE 13 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 09:59:52
+--------------------------------------------------
+Current Conditions: Light Rain, 9.6°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:50 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.6°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 90 % Dewpoint: 8.0°C Wind: ESE 13 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 10:01:52
+--------------------------------------------------
+Current Conditions: Light Rain, 9.6°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:50 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.6°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 90 % Dewpoint: 8.0°C Wind: ESE 13 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 10:03:53
+--------------------------------------------------
+Current Conditions: Light Rain, 9.6°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:50 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.6°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 90 % Dewpoint: 8.0°C Wind: ESE 13 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 10:05:53
+--------------------------------------------------
+Current Conditions: Light Rain, 9.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 10:00 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.3°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 94 % Dewpoint: 8.4°C Wind: SE 10 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 10:07:54
+--------------------------------------------------
+Current Conditions: Light Rain, 9.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 10:00 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.3°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 94 % Dewpoint: 8.4°C Wind: SE 10 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 10:09:54
+--------------------------------------------------
+Current Conditions: Light Rain, 9.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 10:00 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.3°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 94 % Dewpoint: 8.4°C Wind: SE 10 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 10:11:56
+--------------------------------------------------
+Current Conditions: Light Rain, 9.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 10:00 AM CDT Thursday 16 October 2025 Condition: Light Rain Temperature: 9.3°C Pressure / Tendency: 101.4 kPa falling Visibility: 3 km Humidity: 94 % Dewpoint: 8.4°C Wind: SE 10 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 10:16:06
+--------------------------------------------------
+Current Conditions: Thunderstorm with Light Rain, 10.6°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 10:46 PM CDT Thursday 16 October 2025 Condition: Thunderstorm with Light Rain Temperature: 10.6°C Pressure / Tendency: 100.4 kPa falling Visibility: 1.6 km Humidity: 100 % Dewpoint: 10.6°C Wind: ENE 17 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-10-16 22:51:02
+--------------------------------------------------

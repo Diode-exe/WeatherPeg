@@ -11,7 +11,7 @@ if os.name == "nt":
     import tts_helper
     from win11toast import toast
 else:
-    print("[LOG] Not importing tts, toast, not on NT")
+    logging.info("Not importing tts, toast, not on NT")
 import source_helper
 import time
 import threading
@@ -20,6 +20,7 @@ import browser_helper
 from flask_socketio import SocketIO
 import signal
 import radar_helper
+import logging
 
 # https://github.com/Diode-exe/WeatherPeg
 
@@ -65,6 +66,7 @@ def http_get(url, **kwargs):
     return _HTTP_SESSION.get(url, timeout=timeout, **kwargs)
 
 class ScrollingSummary:
+    # garbage implementation, i hate this
     def __init__(self, parent, text="", width=80, speed=150):
         self.original_text = text
         self.width = width
@@ -180,9 +182,9 @@ def logger():
         # Ensure directory exists
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         if os.path.exists(filename):
-            print(f"[LOG] Found {filename}")
+            logging.info(f"Found {filename}")
         else:
-            print(f"[LOG] Could not find {filename}, but created it")
+            logging.info(f"Could not find {filename}, but created it")
         with open(filename, "a") as f:
                 f.write(f"{current_title}\n")
                 f.write(f"Summary: {current_summary}\n")
@@ -190,9 +192,9 @@ def logger():
                 f.write(f"Current warning: {warning_summary}\n")
                 f.write(f"Logged time: {logged_time}\n")
                 f.write("-" * 50 + "\n")
-        print(f"[LOG] Logged current weather to {filename}")
+        logging.info(f"Logged current weather to {filename}")
     else:
-        print("[LOG] Not writing to log")
+        logging.info("Not writing to log")
 
 # def random_fact():
 #     global current_fact
@@ -230,7 +232,7 @@ class Config():
                         # Convert to boolean (0 = False, 1 = True)
                         return value == "1"
         except FileNotFoundError:
-            print(f"[LOG] File {configfilename} not found")
+            logging.error(f"File {configfilename} not found")
             return False
         return False  # Default to False if not found
 
@@ -245,10 +247,10 @@ class Config():
                         try:
                             return int(value)  # return as integer
                         except ValueError:
-                            print(f"[LOG] Invalid port value: {value}")
+                            logging.error(f"Invalid port value: {value}")
                             return None
         except FileNotFoundError:
-            print(f"[LOG] File {configfilename} not found")
+            logging.error(f"File {configfilename} not found")
             return None
 
         return None  # Default if "port:" not found
@@ -269,28 +271,31 @@ class Config():
                         except ValueError:
                             return value  # fallback to raw string
         except FileNotFoundError:
-            print(f"[LOG] File {configfilename} not found")
+            logging.error(f"File {configfilename} not found")
             return default
         return default
 
-port = Config.get_config_port()
+if Config.get_config_port() in range(1, 65535):
+    port = Config.get_config_port()
+else:
+    logging.error("Webserver port not valid!")
 
 def main_speaker(text):
     if os.name == "nt":
-        tts_enabled = Config.get_config_bool_tts("do_tts")
-        print(f"[LOG] TTS enabled: {tts_enabled}")
+        tts_enabled = Config.get_config_bool("do_tts")
+        logging.info(f"TTS enabled: {tts_enabled}")
         if tts_enabled:
-            print(f"[LOG] About to speak: {text}")
+            logging.info(f"About to speak: {text}")
             tts_helper.speaker(text)
         else:
-            print("[LOG] TTS is disabled in config")
+            logging.info("TTS is disabled in config")
     else:
         if check_espeak():
             thread = threading.Thread(target=linux_tts, args=(text,))
             thread.daemon = True
             thread.start()
         else:
-            print(f"[LOG] TTS not available - espeak not found. Install with: sudo apt install espeak")
+            logging.info(f"TTS not available - espeak not found. Install with: sudo apt install espeak")
 
 def weathermodechoice():
     if Config.get_config_bool("mode"):
@@ -334,20 +339,20 @@ def weathermodechoice():
                             scrolling_summary.update_text(current_summary)
                         break
             if os.name == "nt":
-                if tts_helper.get_config_bool_tts("do_tts"):
+                if Config.get_config_bool("do_tts"):
                     tts_helper.speaker(current_title)
                     tts_helper.speaker(current_summary)
                     tts_helper.speaker(warning_title)
                     tts_helper.speaker(warning_summary)
             else:
                 if check_espeak():
-                    if tts_helper.get_config_bool_tts("do_tts"):
+                    if Config.get_config_bool("do_tts"):
                         tts_helper.linux_tts(current_title)
                         tts_helper.linux_tts(current_summary)
                         tts_helper.linux_tts(warning_title)
                         tts_helper.linux_tts(warning_summary)
                 else:
-                    print(f"[LOG] TTS not available - espeak not found. Install with: sudo apt install espeak")
+                    logging.error(f"TTS not available - espeak not found. Install with: sudo apt install espeak")
 
             dlhistory()
 
@@ -362,7 +367,10 @@ def weathermodechoice():
                 while True:
                     try:
                         # Fetch fresh data each cycle
-                        response = http_get(source_helper.RSS_URL)
+                        try:
+                            response = http_get(source_helper.RSS_URL)
+                        except Exception as e:
+                            logging.error(f"Error in getting weather data")
                         feed = feedparser.parse(response.content)
                         weather_entries = [entry for entry in feed.entries if entry.category == "Weather Forecasts"]
 
@@ -383,7 +391,7 @@ def weathermodechoice():
                             print("-" * 50)
 
                             if os.name == "nt":
-                                if tts_helper.get_config_bool_tts("do_tts"):
+                                if Config.get_config_bool("do_tts"):
                                     tts_helper.speaker(current_title)
                                     tts_helper.speaker(current_summary)
                             else:
@@ -391,7 +399,7 @@ def weathermodechoice():
                                     tts_helper.linux_tts(current_title)
                                     tts_helper.linux_tts(current_summary)
                                 else:
-                                    print(f"[LOG] TTS not available - espeak not found. Install with: sudo apt install espeak")
+                                    logging.error(f"TTS not available - espeak not found. Install with: sudo apt install espeak")
 
                             index = (index + 1) % len(weather_entries)
 
@@ -399,7 +407,7 @@ def weathermodechoice():
                             if 'root' in globals() and root:
                                 root.after(0, update_display)
                     except Exception as e:
-                        print(f"Error in weather cycle: {e}")
+                        logging.error(f"Error in weather cycle: {e}")
 
                     time.sleep(30)
 
@@ -452,7 +460,7 @@ def display():
             scrolling_summary = ScrollingSummary(root, current_summary, width=80, speed=150)
 
         if Config.get_config_bool("show_link"):
-            print("[LOG] Showing link")
+            logging.info("Showing link")
             link_label = tk.Label(
                 root, textvariable=link_var,
                 fg="cyan", bg="black",
@@ -461,7 +469,7 @@ def display():
             )
             link_label.pack()
         else:
-            print("[LOG] Not showing link")
+            logging.info("Not showing link")
 
         version_label = tk.Label(
             root, text=current_version,
@@ -478,7 +486,7 @@ def display():
         designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
 
         if Config.get_config_bool("show_warning"):
-            print("[LOG] Showing warning labels")
+            logging.info("Showing warning labels")
             show_warnings = True
             current_warning_title = tk.Label(
                 root, textvariable=warning_title_var,
@@ -496,7 +504,7 @@ def display():
             )
             current_warning.pack()
         else:
-            print("[LOG] Not showing warning labels")
+            logging.info("Not showing warning labels")
             show_warnings = False
 
         # fact_label = tk.Label(root, textvariable=current_fact_var, fg="lime", bg="black",
@@ -504,7 +512,7 @@ def display():
         #                 padx=10, pady=10, wraplength=750)
 
         # fact_label.pack()
-        print("[LOG] Not showing buttons")
+        logging.info("Not showing buttons")
         show_buttons = False
 
         # Add timestamp
@@ -566,10 +574,10 @@ def display():
             # fact_label.config(fg="lime")
 
         if Config.get_config_bool("show_cmd"):
-            print("[LOG] Showing command window")
+            logging.info("Showing command window")
             CommandWindow.create_command_window()
         else:
-            print("[LOG] Not showing command window")
+            logging.info("Not showing command window")
 
         # Schedule flashes every 10 minutes
         def schedule_flash():
@@ -623,7 +631,7 @@ class CommandWindow:
         )
         help_btn.pack(pady=5)
 
-        print("[LOG] Showing buttons")
+        logging.info("Showing buttons")
         refresh_button = tk.Button(
             cmd_window, text="Refresh Weather (F5)",
             command=WeatherFunctions.refresh_weather,
@@ -655,7 +663,6 @@ class CommandWindow:
         # forecast_button = tk.Button(cmd_window, text="5 Day Forecast", command=process_weather_entries,
         #                     bg="blue", fg="white", font=("VCR OSD Mono", 12))
         # forecast_button.pack(pady=5)
-        show_buttons = True
 
         radar_button = tk.Button(
             cmd_window, text="Open radar (F2)",
@@ -691,7 +698,7 @@ socketio = SocketIO(app, async_mode="threading")
 
 @app.route("/weather")
 def webweather():
-    print("[DEBUG] Flask route accessed!")
+    logging.info("Flask route accessed!")
     css_url = url_for('static', filename='styles.css')
     try:
         last_updated_value = timestamp_var.get()
@@ -724,7 +731,7 @@ def start_webserver():
             app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)
         threading.Thread(target=run_server, daemon=True).start()
     else:
-        print("[LOG] Not starting webserver")
+        logging.info("Not starting webserver")
 
 start_webserver()
 
@@ -749,7 +756,7 @@ def fetch_initial_weather_globals():
                 current_summary = re.sub(r'<[^>]+>', '', current_summary)
                 break
     except Exception as e:
-        print(f"[ERROR] Could not fetch initial weather: {e}")
+        logging.error(f"Could not fetch initial weather: {e}")
 
 def dlhistory():
     url = source_helper.RSS_URL
@@ -772,7 +779,7 @@ def dlhistory():
         for chunk in response.iter_content(chunk_size=8192):
             f.write(chunk)
 
-    print(f"Download complete! Saved as {new_filename}")
+    logging.info(f"Download complete! Saved as {new_filename}")
 
 # def open_widget(event=None):
 #     try:
@@ -790,16 +797,16 @@ def warning_notif(event=None):
     if os.name == "nt":
         toast("Weather Warning!", "WeatherPeg has detected a potential weather warning or watch!")
     else:
-        print("[LOG] Not doing toast, not on")
+        logging.info("Not doing toast, not on")
 
 if __name__ == "__main__":
     print(f"Welcome to {prog}, version {current_version}")
-    print("Fetching initial weather data for webserver...")
+    logging.info("Fetching initial weather data for webserver...")
     fetch_initial_weather_globals()
     if Config.get_config_bool("show_display"):
         print("Starting GUI...")
         display()
     else:
-        print("[LOG] Not showing display")
+        logging.info("Not showing display")
         while True:
             time.sleep(1)
