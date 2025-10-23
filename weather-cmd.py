@@ -143,6 +143,7 @@ def logger():
         logging.info("Not writing to log")
 
 # def random_fact():
+# this took time, keep it around
 #     global current_fact
 #     facts = [
 #         "Did you know lighting strikes the earth about 100 times a second?",
@@ -236,6 +237,7 @@ def main_speaker(text):
         else:
             logging.info("TTS is disabled in config")
     else:
+        # i do not know why this condition is statically evaluated as false
         if check_espeak():
             thread = threading.Thread(target=linux_tts, args=(text,))
             thread.daemon = True
