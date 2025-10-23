@@ -22,6 +22,7 @@ import signal
 import radar_helper
 import logging
 from scrolling_text_widget import ScrollingTextWidget
+from command_window import CommandWindow
 
 # https://github.com/Diode-exe/WeatherPeg
 
@@ -39,7 +40,7 @@ title_var = None
 summary_var = None
 link_var = None
 
-current_version = "WeatherPeg Version 3.3.3"
+current_version = "WeatherPeg Version 3.4"
 designed_by = "Designed by Diode-exe"
 prog = "WeatherPeg"
 
@@ -385,7 +386,7 @@ def display():
         root.bind("<F11>", ScreenState.toggle_fullscreen)
         root.bind("<Escape>", ScreenState.exit_fullscreen)
         root.bind("<F5>", WeatherFunctions.refresh_weather)
-        root.bind("<F6>", CommandWindow.create_command_window)
+        root.bind("<F6>", lambda event: CommandWindow.create_command_window(root, "WeatherPeg", port, WeatherFunctions.refresh_weather, ScreenState.toggle_fullscreen))
         root.bind("<F4>", lambda event: browser_helper.WebOpen.opener(port))
         root.bind("<F2>", radar_helper.open_radar)
         # root.bind("<F8>", open_widget)
@@ -523,7 +524,7 @@ def display():
 
         if Config.get_config_bool("show_cmd"):
             logging.info("Showing command window")
-            CommandWindow.create_command_window()
+            CommandWindow.create_command_window(root, "WeatherPeg", port, WeatherFunctions.refresh_weather, ScreenState.toggle_fullscreen)
         else:
             logging.info("Not showing command window")
 
@@ -541,96 +542,96 @@ def display():
 
         root.mainloop()
 
-class CommandWindow:
-    """Static-style class for command window functions"""
+# class CommandWindow:
+#     """Static-style class for command window functions"""
 
-    @staticmethod
-    def show_help():
-        """Open a help window showing contents of txt/help.txt"""
-        try:
-            with open("txt/help.txt", "r") as helpfile:
-                help_text = helpfile.read()
-        except FileNotFoundError:
-            help_text = "Help file not found!"
+#     @staticmethod
+#     def show_help():
+#         """Open a help window showing contents of txt/help.txt"""
+#         try:
+#             with open("txt/help.txt", "r") as helpfile:
+#                 help_text = helpfile.read()
+#         except FileNotFoundError:
+#             help_text = "Help file not found!"
 
-        help_window = tk.Toplevel(root)
-        help_window.title("Help")
-        help_window.geometry("400x300")
+#         help_window = tk.Toplevel(root)
+#         help_window.title("Help")
+#         help_window.geometry("400x300")
 
-        text_widget = tk.Text(help_window, wrap=tk.WORD)
-        text_widget.insert(1.0, help_text)
-        text_widget.pack(fill=tk.BOTH, expand=True)
+#         text_widget = tk.Text(help_window, wrap=tk.WORD)
+#         text_widget.insert(1.0, help_text)
+#         text_widget.pack(fill=tk.BOTH, expand=True)
 
-    @staticmethod
-    def create_command_window(event=None):
-        """Create the main command window with buttons"""
-        if not root or not root.winfo_exists():
-            print("Main window has been destroyed!")
-            return None
+#     @staticmethod
+#     def create_command_window(event=None):
+#         """Create the main command window with buttons"""
+#         if not root or not root.winfo_exists():
+#             print("Main window has been destroyed!")
+#             return None
 
-        cmd_window = tk.Toplevel(root)
-        cmd_window.title(f"{prog} Commands")
-        cmd_window.geometry("")
+#         cmd_window = tk.Toplevel(root)
+#         cmd_window.title(f"{prog} Commands")
+#         cmd_window.geometry("")
 
-        # Help button
-        help_btn = tk.Button(
-            cmd_window, text="Help",
-            command=CommandWindow.show_help
-        )
-        help_btn.pack(pady=5)
+#         # Help button
+#         help_btn = tk.Button(
+#             cmd_window, text="Help",
+#             command=CommandWindow.show_help
+#         )
+#         help_btn.pack(pady=5)
 
-        logging.info("Showing buttons")
-        refresh_button = tk.Button(
-            cmd_window, text="Refresh Weather (F5)",
-            command=WeatherFunctions.refresh_weather,
-            bg="green", fg="yellow", font=("VCR OSD Mono", 12)
-        )
-        refresh_button.pack(pady=10)
+#         logging.info("Showing buttons")
+#         refresh_button = tk.Button(
+#             cmd_window, text="Refresh Weather (F5)",
+#             command=WeatherFunctions.refresh_weather,
+#             bg="green", fg="yellow", font=("VCR OSD Mono", 12)
+#         )
+#         refresh_button.pack(pady=10)
 
-        fullscreen_button = tk.Button(
-            cmd_window, text="Toggle Fullscreen (F11)",
-            command=ScreenState.toggle_fullscreen,
-            bg="blue", fg="white", font=("VCR OSD Mono", 12)
-        )
-        fullscreen_button.pack(pady=5)
+#         fullscreen_button = tk.Button(
+#             cmd_window, text="Toggle Fullscreen (F11)",
+#             command=ScreenState.toggle_fullscreen,
+#             bg="blue", fg="white", font=("VCR OSD Mono", 12)
+#         )
+#         fullscreen_button.pack(pady=5)
 
-        browser_button = tk.Button(
-            cmd_window, text="Open webserver page (F4)",
-            command=lambda: browser_helper.WebOpen.opener(port),
-            bg="blue", fg="white", font=("VCR OSD Mono", 12)
-        )
-        browser_button.pack(pady=5)
+#         browser_button = tk.Button(
+#             cmd_window, text="Open webserver page (F4)",
+#             command=lambda: browser_helper.WebOpen.opener(port),
+#             bg="blue", fg="white", font=("VCR OSD Mono", 12)
+#         )
+#         browser_button.pack(pady=5)
 
-        # widget_button = tk.Button(
-        #     cmd_window, text="Open widget mode (F8)",
-        #     command=open_widget,
-        #     bg="blue", fg="white", font=("VCR OSD Mono", 12)
-        # )
-        # widget_button.pack(pady=5)
+#         # widget_button = tk.Button(
+#         #     cmd_window, text="Open widget mode (F8)",
+#         #     command=open_widget,
+#         #     bg="blue", fg="white", font=("VCR OSD Mono", 12)
+#         # )
+#         # widget_button.pack(pady=5)
 
-        # forecast_button = tk.Button(cmd_window, text="5 Day Forecast", command=process_weather_entries,
-        #                     bg="blue", fg="white", font=("VCR OSD Mono", 12))
-        # forecast_button.pack(pady=5)
+#         # forecast_button = tk.Button(cmd_window, text="5 Day Forecast", command=process_weather_entries,
+#         #                     bg="blue", fg="white", font=("VCR OSD Mono", 12))
+#         # forecast_button.pack(pady=5)
 
-        radar_button = tk.Button(
-            cmd_window, text="Open radar (F2)",
-            command=radar_helper.open_radar,
-            bg="blue", fg="white", font=("VCR OSD Mono", 12)
-        )
-        radar_button.pack(pady=5)
+#         radar_button = tk.Button(
+#             cmd_window, text="Open radar (F2)",
+#             command=radar_helper.open_radar,
+#             bg="blue", fg="white", font=("VCR OSD Mono", 12)
+#         )
+#         radar_button.pack(pady=5)
 
-        # Exit button
-        exit_btn = tk.Button(cmd_window, text="Exit", command=root.quit)
-        exit_btn.pack(pady=5)
+#         # Exit button
+#         exit_btn = tk.Button(cmd_window, text="Exit", command=root.quit)
+#         exit_btn.pack(pady=5)
 
-        # widget_button = tk.Button(
-        #     cmd_window, text="Open widget mode (F8)",
-        #     command=open_widget,
-        #     bg="blue", fg="white", font=("VCR OSD Mono", 12)
-        # )
-        # widget_button.pack(pady=5)
+#         # widget_button = tk.Button(
+#         #     cmd_window, text="Open widget mode (F8)",
+#         #     command=open_widget,
+#         #     bg="blue", fg="white", font=("VCR OSD Mono", 12)
+#         # )
+#         # widget_button.pack(pady=5)
 
-        return cmd_window
+#         return cmd_window
 
 
 if getattr(sys, 'frozen', False):  # running as exe
