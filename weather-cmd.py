@@ -26,7 +26,7 @@ from command_window import CommandWindow
 
 # https://github.com/Diode-exe/WeatherPeg
 
-# Global variables to store weather data
+# Global variables to store weather data (why) course i cant remove them
 current_entry = None
 current_title = ""
 current_summary = ""
@@ -69,14 +69,15 @@ def http_get(url, **kwargs):
 
 # Use the improved ScrollingTextWidget as ScrollingSummary for backward compatibility
 ScrollingSummary = ScrollingTextWidget
+# I could just not do this but suck it
 
 def update_display():
     """Update the GUI with current weather data"""
-    global title_var, summary_var, link_var, scrolling_summary, warning_var
+    global title_var, summary_var, link_var, scrolling_summary, warning_summary_var
     if title_var and summary_var and link_var:
         title_var.set(current_title)
         link_var.set(current_link)
-        warning_var.set(warning_summary)
+        warning_summary_var.set(warning_summary)
         warning_title_var.set(warning_title)
         # Update the scrolling summary
         if scrolling_summary:  # Fixed reference
@@ -84,13 +85,14 @@ def update_display():
 
 
 class WeatherFunctions():
-    # this does not use self, for the record
+    # this does not use self, for the record, idk, i couldnt figure it out
     def update_forecast():
         title_var.set(current_title)
         if Config.get_config_bool("show_scroller"):
             scrolling_summary.update_text(current_summary)
-        warning_var.set("")
+        warning_summary_var.set("")
         warning_title_var.set("")
+        # i do not know why it sets it to nothing like that
 
     def refresh_weather(event=None):
         """Refresh weather data and update display"""
@@ -101,7 +103,7 @@ class WeatherFunctions():
         # current_fact_var.set(current_fact)
         display_flash()
         update_display()
-        socketio.emit("weather_updated")
+        socketio.emit("weather_updated") # for refresh webserver
 
 class ScreenState():
     def toggle_fullscreen(event=None):
@@ -239,6 +241,7 @@ def main_speaker(text):
             logging.info("TTS is disabled in config")
     else:
         # i do not know why this condition is statically evaluated as false
+        # it's because of os.name, it will always eval as false on windows
         if check_espeak():
             thread = threading.Thread(target=linux_tts, args=(text,))
             thread.daemon = True
@@ -266,7 +269,7 @@ def weathermodechoice():
 
             for entry in feed.entries:
                 if entry.category == "Current Conditions":
-                    global title_var, link_var, warning_var, warning_title_var
+                    global title_var, link_var, warning_summary_var, warning_title_var
                     current_title = entry.title
                     current_link = entry.link
 
@@ -282,7 +285,7 @@ def weathermodechoice():
                     if Config.get_config_bool("show_display"):
                         title_var.set(current_title)
                         link_var.set(current_link)
-                        warning_var.set(warning_summary)
+                        warning_summary_var.set(warning_summary)
                         warning_title_var.set(warning_title)
                         if Config.get_config_bool("show_scroller"):
                             scrolling_summary.update_text(current_summary)
@@ -294,6 +297,7 @@ def weathermodechoice():
                     tts_helper.speaker(warning_title)
                     tts_helper.speaker(warning_summary)
             else:
+                # like before, always evals as false on Windows
                 if check_espeak():
                     if Config.get_config_bool("do_tts"):
                         tts_helper.linux_tts(current_title)
@@ -330,8 +334,11 @@ def weathermodechoice():
                             current_link = entry.link
                             current_summary = html.unescape(entry.summary)
                             current_summary = re.sub(r'<[^>]+>', '', current_summary)
+                            # this just removes html tags
+                            # i could use bs4, but i already have this
 
                             warning_summary = current_summary
+                            # why?
 
                             print("Current Conditions Updated:")
                             print("Entry title:", current_title)
@@ -370,7 +377,7 @@ pass
 refresh_delay = Config.get_config_value("refresh_delay", 120000)
 flash_delay = Config.get_config_value("flash_delay", 120000)
 def display():
-    global root, title_var, summary_var, link_var, scrolling_summary, timestamp_var, warning_var
+    global root, title_var, summary_var, link_var, scrolling_summary, timestamp_var, warning_summary_var
     global current_warning, current_fact_var, warning_title_var
     global display_flash
     global refresh_button, fullscreen_button, browser_button
@@ -394,7 +401,7 @@ def display():
         # Create StringVar variables
         title_var = tk.StringVar(value=current_title)
         link_var = tk.StringVar(value=current_link)
-        warning_var = tk.StringVar(value=warning_summary)
+        warning_summary_var = tk.StringVar(value=warning_summary)
         warning_title_var = tk.StringVar(value=warning_title)
         # current_fact_var = tk.StringVar(value=current_fact)
 
@@ -446,7 +453,7 @@ def display():
             current_warning_title.pack()
 
             current_warning = tk.Label(
-                root, textvariable=warning_var,
+                root, textvariable=warning_summary_var,
                 fg="lime", bg="black",
                 font=("VCR OSD Mono", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
