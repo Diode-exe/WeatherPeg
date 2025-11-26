@@ -2317,3 +2317,87 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: No watches or warnings in effect.
 Logged time: Current time is 2025-10-27 09:45:15
 --------------------------------------------------
+Current Conditions: Sunny, 4.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CST Monday 3 November 2025 Condition: Sunny Temperature: 4.3°C Pressure / Tendency: 101.4 kPa rising Visibility: 24 km Humidity: 59 % Dewpoint: -3.1°C Wind: W 29 km/h gust 42 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-03 09:22:46
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:13:51
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:15:51
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:17:52
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:19:52
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:21:53
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:23:53
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:25:53
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:27:55
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:29:55
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:31:55
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:33:55
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:35:55
+--------------------------------------------------
+Current Conditions: Cloudy, -3.3°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 PM CST Tuesday 25 November 2025 Condition: Cloudy Temperature: -3.3°C Pressure / Tendency: 102.4 kPa rising Visibility: 24 km Humidity: 86 % Wind Chill: -10 Dewpoint: -5.3°C Wind: NNW 27 km/h Air Quality Health Index: 1
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2025-11-25 20:42:54
+--------------------------------------------------

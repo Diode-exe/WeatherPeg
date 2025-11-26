@@ -69,7 +69,7 @@ def http_get(url, **kwargs):
 
 # Use the improved ScrollingTextWidget as ScrollingSummary for backward compatibility
 ScrollingSummary = ScrollingTextWidget
-# I could just not do this but suck it
+# I could just not do this but whatever
 
 def update_display():
     """Update the GUI with current weather data"""
@@ -92,7 +92,7 @@ class WeatherFunctions():
             scrolling_summary.update_text(current_summary)
         warning_summary_var.set("")
         warning_title_var.set("")
-        # i do not know why it sets it to nothing like that
+        # i cannot remember why it sets it to nothing like that
 
     def refresh_weather(event=None):
         """Refresh weather data and update display"""

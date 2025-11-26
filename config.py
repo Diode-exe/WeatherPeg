@@ -54,3 +54,6 @@ class Config():
             logging.error(f"File {configfilename} not found")
             return default
         return default
+    
+if __name__ == "__main__":
+    print("This is a library, and not meant to run directly")
