@@ -67,10 +67,6 @@ def http_get(url, **kwargs):
     timeout = kwargs.pop("timeout", 10)
     return _HTTP_SESSION.get(url, timeout=timeout, **kwargs)
 
-# Use the improved ScrollingTextWidget as ScrollingSummary for backward compatibility
-ScrollingSummary = ScrollingTextWidget
-# I could just not do this but whatever
-
 def update_display():
     """Update the GUI with current weather data"""
     global title_var, summary_var, link_var, scrolling_summary, warning_summary_var
@@ -83,9 +79,7 @@ def update_display():
         if scrolling_summary:  # Fixed reference
             scrolling_summary.update_text(current_summary)
 
-
 class WeatherFunctions():
-    # this does not use self, for the record, idk, i couldnt figure it out
     def update_forecast():
         title_var.set(current_title)
         if Config.get_config_bool("show_scroller"):
@@ -240,8 +234,6 @@ def main_speaker(text):
         else:
             logging.info("TTS is disabled in config")
     else:
-        # i do not know why this condition is statically evaluated as false
-        # it's because of os.name, it will always eval as false on windows
         if check_espeak():
             thread = threading.Thread(target=linux_tts, args=(text,))
             thread.daemon = True
@@ -413,7 +405,7 @@ def display():
 
         # Create scrolling summary (replaces the old summary_label)
         if Config.get_config_bool("show_scroller"):
-            scrolling_summary = ScrollingSummary(root, current_summary, width=80, speed=150)
+            scrolling_summary = ScrollingTextWidget(root, current_summary, width=80, speed=150)
 
         if Config.get_config_bool("show_link"):
             logging.info("Showing link")
