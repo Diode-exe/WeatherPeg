@@ -289,7 +289,6 @@ def weathermodechoice():
                     tts_helper.speaker(warning_title)
                     tts_helper.speaker(warning_summary)
             else:
-                # like before, always evals as false on Windows
                 if check_espeak():
                     if Config.get_config_bool("do_tts"):
                         tts_helper.linux_tts(current_title)
