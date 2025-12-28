@@ -56,4 +56,4 @@ class Config():
         return default
     
 if __name__ == "__main__":
-    print("This is a library, and not meant to run directly")
+    print("This is a module, and not meant to be run directly")
