@@ -16,7 +16,7 @@ try:
         if not line:
             raise ValueError("Coordinate file is empty")
         lat_str, lon_str = line.split(",")
-        coordinates = (float(lat_str), float(lon_str))  # ✅ tuple of floats
+        coordinates = (float(lat_str), float(lon_str))  # tuple of floats
 except FileNotFoundError:
     print(f"[WARN] {coord_source} not found!")
     print("You need a file called coord_source.txt with coords in it so the radar has a location")
