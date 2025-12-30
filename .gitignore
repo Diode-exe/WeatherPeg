@@ -5,3 +5,4 @@ txt/history.txt
 /__pycache__
 txt/history.txt
 *.xml
+deadDir.txt
