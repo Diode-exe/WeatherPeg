@@ -1,7 +1,7 @@
 show_warning: 1
 show_buttons: 1
 show_instruction: 1
-do_tts: 1
+do_tts: 1\0
 show_link: 1
 mode: 1
 show_cmd: 1
