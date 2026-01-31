@@ -284,10 +284,14 @@ def weathermodechoice():
                         break
             if os.name == "nt":
                 if Config.get_config_bool("do_tts"):
-                    tts_helper.speaker(current_title)
-                    tts_helper.speaker(current_summary)
-                    tts_helper.speaker(warning_title)
-                    tts_helper.speaker(warning_summary)
+                    try:
+                        tts_helper.speaker(current_title)
+                        tts_helper.speaker(current_summary)
+                        tts_helper.speaker(warning_title)
+                        tts_helper.speaker(warning_summary)
+                    except Exception as e:  
+                        logging.error(f"Error in TTS on Windows: {e}")
+                            
             else:
                 if check_espeak():
                     if Config.get_config_bool("do_tts"):
