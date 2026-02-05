@@ -452,6 +452,7 @@ disable=raw-checker-failed,
         W0718, #broad-exception-caught
         W0212, # protected-access
         C0301, # line-too-long
+        W1203, # logging-fstring-interpolation
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

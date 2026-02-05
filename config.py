@@ -1,10 +1,12 @@
 import logging
 
 class Config():
-    def get_config_bool(key):
+    """Class to read configuration values from a text file"""
+    def get_config_bool(self, key):
+        """Read a boolean config value (0 or 1) from the config file"""
         configfilename = "txt/config.txt"
         try:
-            with open(configfilename, "r") as f:
+            with open(configfilename, "r", encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
                     if line.startswith(f"{key}:"):
@@ -16,10 +18,11 @@ class Config():
             return False
         return False  # Default to False if not found
 
-    def get_config_port():
+    def get_config_port(self):
+        """Read the port number from the config file"""
         configfilename = "txt/config.txt"
         try:
-            with open(configfilename, "r") as f:
+            with open(configfilename, "r", encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
                     if line.lower().startswith("port:"):
@@ -35,10 +38,11 @@ class Config():
 
         return None  # Default if "port:" not found
 
-    def get_config_value(key, default=None):
+    def get_config_value(self, key, default=None):
+        """Read a config value from the config file, with optional default"""
         configfilename = "txt/config.txt"
         try:
-            with open(configfilename, "r") as f:
+            with open(configfilename, "r", encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
                     if line.startswith(f"{key}:"):
@@ -54,6 +58,6 @@ class Config():
             logging.error(f"File {configfilename} not found")
             return default
         return default
-    
+
 if __name__ == "__main__":
     print("This is a module, and not meant to be run directly")
