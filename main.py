@@ -1,28 +1,29 @@
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-import feedparser
+import logging
 import re
 import html
 import tkinter as tk
 import datetime
-import os, sys
+import os
+import sys
+import time
+import threading
+from flask import Flask, url_for, request, render_template
+from flask_socketio import SocketIO
+import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+import feedparser
+import signal
+from command_window import CommandWindow
+import source_helper
+import browser_helper
+import radar_helper
+from scrolling_text_widget import ScrollingTextWidget
 if os.name == "nt":
     import tts_helper
     from win11toast import toast
 else:
     logging.info("Not importing tts, toast, not on NT")
-import source_helper
-import time
-import threading
-from flask import Flask, url_for, request, render_template
-import browser_helper
-from flask_socketio import SocketIO
-import signal
-import radar_helper
-import logging
-from scrolling_text_widget import ScrollingTextWidget
-from command_window import CommandWindow
 
 # https://github.com/Diode-exe/WeatherPeg
 
