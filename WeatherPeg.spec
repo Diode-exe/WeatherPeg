@@ -4,7 +4,7 @@
 block_cipher = None
 
 a = Analysis(
-    ['weather-cmd.py'],  # replace with your WeatherPeg entrypoint
+    ['main.py'],  # replace with your WeatherPeg entrypoint
     pathex=[],
     binaries=[],
     datas=[

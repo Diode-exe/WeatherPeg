@@ -1,5 +1,7 @@
 # WeatherPeg
 
+# Use WeatherPegNew instead of this
+
 ## Your one-stop shop for the current weather in Winnipeg
 
 Everything is included, just run the .exe

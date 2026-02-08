@@ -10,7 +10,7 @@ class CommandWindow:
     def show_help(root_window):
         """Open a help window showing contents of txt/help.txt"""
         try:
-            with open("txt/help.txt", "r") as helpfile:
+            with open("txt/help.txt", "r", encoding="utf-8") as helpfile:
                 help_text = helpfile.read()
         except FileNotFoundError:
             help_text = "Help file not found!"
@@ -42,7 +42,7 @@ class CommandWindow:
         help_btn.pack(pady=5)
 
         logging.info("Showing buttons")
-        
+
         # Refresh button (only if refresh function is provided)
         if refresh_func:
             refresh_button = tk.Button(
