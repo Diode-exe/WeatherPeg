@@ -1,0 +1,104 @@
+[
+	{
+		"id": "logging-before-import",
+		"severity": "critical",
+		"line": 12,
+		"description": "Non-Windows path logs before logging is imported, causing NameError during import."
+	},
+	{
+		"id": "nonwindows-tts-missing-imports",
+		"severity": "critical",
+		"line": 227,
+		"description": "Non-Windows TTS path references tts_helper/check_espeak/linux_tts without import or definition, so calling this path crashes."
+	},
+	{
+		"id": "response-unbound",
+		"severity": "critical",
+		"line": 321,
+		"description": "If http_get fails, response is undefined but is still accessed, breaking the background cycle thread."
+	},
+	{
+		"id": "link-label-undefined",
+		"severity": "critical",
+		"line": 486,
+		"description": "When show_link is false, link_label is never created but display_flash and restore_colors still use it, causing NameError on flash."
+	},
+	{
+		"id": "update-display-gated",
+		"severity": "high",
+		"line": 70,
+		"description": "update_display requires summary_var, but summary_var is never initialized, so updates are skipped."
+	},
+	{
+		"id": "scrolling-summary-undefined",
+		"severity": "high",
+		"line": 78,
+		"description": "If show_scroller is false, scrolling_summary is never defined but update_display still reads it, causing NameError."
+	},
+	{
+		"id": "globals-not-updated-mode1",
+		"severity": "high",
+		"line": 266,
+		"description": "In mode 1, current_title/current_summary/current_link/warning_* are assigned without global, so global state is not updated and UI/web can show stale data."
+	},
+	{
+		"id": "globals-not-updated-mode0",
+		"severity": "high",
+		"line": 332,
+		"description": "In mode 0, current_* are assigned without global, so global state is not updated and UI/web can show stale data."
+	},
+	{
+		"id": "warning-variables-uninitialized",
+		"severity": "high",
+		"line": 252,
+		"description": "warning_title/warning_summary can be unset if no Warnings and Watches entry exists but are used for UI/TTS unconditionally."
+	},
+	{
+		"id": "thread-leak-refresh",
+		"severity": "medium",
+		"line": 91,
+		"description": "refresh_weather can create a new background cycle each time in mode 0, leading to thread leaks and duplicate updates."
+	},
+	{
+		"id": "webserver-side-effects",
+		"severity": "medium",
+		"line": 680,
+		"description": "start_webserver runs at import time, causing side effects (thread, port binding) that make imports harder to test or reuse."
+	},
+	{
+		"id": "socketio-run-mismatch",
+		"severity": "medium",
+		"line": 676,
+		"description": "SocketIO is configured but the server is started with app.run rather than socketio.run, so socketio.emit may not work as expected."
+	},
+	{
+		"id": "logger-timestamp-var",
+		"severity": "medium",
+		"line": 121,
+		"description": "logger reads timestamp_var even when the GUI is not running; refresh_weather can be called without display and crash."
+	},
+	{
+		"id": "port-read-twice",
+		"severity": "low",
+		"line": 222,
+		"description": "Config.get_config_port is called twice at startup, causing redundant file reads."
+	},
+	{
+		"id": "flash-delay-unused",
+		"severity": "low",
+		"line": 373,
+		"description": "flash_delay is loaded but never used."
+	},
+	{
+		"id": "weather-error-no-details",
+		"severity": "low",
+		"line": 318,
+		"description": "Weather fetch error is logged without exception details, which makes debugging harder."
+	},
+	{
+		"id": "unused-globals",
+		"severity": "low",
+		"line": 29,
+		"description": "Some globals like current_entry and summary_var appear unused or stale, increasing confusion."
+	}
+]
