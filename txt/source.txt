@@ -1,1 +1,1 @@
-https://weather.gc.ca/rss/city/mb-38_e.xml
+https://weather.gc.ca/rss/weather/49.895_-97.135_e.xml
